@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#BB6BD9</color>
+    <color name="colorPrimar">#FFFFFF</color>
+    <color name="colorPrimaryDark">#FFFFFF</color>
+    <color name="colorAccent">#BB6BD9</color>
+    <color name="grey">#A6AAB4</color>
+    <color name="purple">#BB6BD9</color>
+    <color name="appPrimaryColor">#615858</color>
+</resources>
