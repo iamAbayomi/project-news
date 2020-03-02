@@ -10,7 +10,7 @@
         android:id="@+id/imageView"
         android:layout_width="420dp"
         android:layout_height="414dp"
-        android:src="@drawable/appbarImage"
+        android:src="@drawable/appbarimage"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
