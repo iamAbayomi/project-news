@@ -44,7 +44,7 @@ class HomeFragment : Fragment() {
 
         val root = inflater.inflate(R.layout.fragment_home, container, false)
 
-        val textView = root.findViewById<TextView>(R.id.textView)
+       // val textView = root.findViewById<TextView>(R.id.textView)
 
 
 
@@ -61,14 +61,14 @@ class HomeFragment : Fragment() {
         getCurrentData()
 
 
-
+/*
         textView.setOnClickListener {
             val intent = Intent( activity , DetailedArticleActivity::class.java)
             startActivity(intent)
-        }
+        }*/
 
 
-        articlesRecyclerViewAdapter!!.notifyDataSetChanged()
+
 
         return root
     }
@@ -88,20 +88,20 @@ class HomeFragment : Fragment() {
 
                     currentArticles.addAll(response.body())
 
-                    val  postsResponse = response.body()[1]
+             /*       val  postsResponse = response.body()[1]
 
                     val stringBuilder = "int " + postsResponse.articlesTitle + "\n" +
                             "date "  + postsResponse.articlesTimeStamp + "\n" +
                             "content \n" + postsResponse.articlesFullText!!.rendered
 
-                   textView!!.text = Jsoup.parse(stringBuilder).text()
-
-
+                  // textView!!.text = Jsoup.parse(stringBuilder).text()
+*/
+                    articlesRecyclerViewAdapter!!.notifyDataSetChanged()
                 }
             }
 
             override fun onFailure(call: Call<List<Articles>>?, t: Throwable?) {
-                textView!!.text = t!!.message
+             //   textView!!.text = t!!.message
             }
 
 
