@@ -7,11 +7,13 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import com.oladiniabayomi.digitalarticles.articles.Articles
 import com.oladiniabayomi.digitalnews.R
 import java.lang.reflect.Array
 
-class ArticlesRecyclerViewAdapter(context: Context, var currentArticles: ArrayList<Articles>?) : RecyclerView.Adapter<ArticlesRecyclerViewHolder>() {
+public class ArticlesRecyclerViewAdapter(var context: Context, var currentArticles: ArrayList<Articles>?) : RecyclerView.Adapter<ArticlesRecyclerViewHolder>() {
 
         private val mInflater: LayoutInflater = LayoutInflater.from(context)
 
@@ -29,9 +31,10 @@ class ArticlesRecyclerViewAdapter(context: Context, var currentArticles: ArrayLi
 
         override fun onBindViewHolder(holder: ArticlesRecyclerViewHolder, position: Int) {
             var currentArticles : Articles = currentArticles!![position]
-            holder.bindTo(currentArticles)
+            holder.bindTo(currentArticles, context)
         }
     }
+
 
     class ArticlesRecyclerViewHolder(itemView : View) : RecyclerView.ViewHolder(itemView) {
 
@@ -41,9 +44,12 @@ class ArticlesRecyclerViewAdapter(context: Context, var currentArticles: ArrayLi
 
 
 
-        fun bindTo(currentArticles: Articles) {
+        fun bindTo(currentArticles: Articles, context: Context) {
          //   articleImage.setImageResource()
 
+            Glide.with(context)
+                .load(currentArticles.articlesThumbnailImage)
+                .into(articleImage)
 
             articleTitle.text = currentArticles.articlesTitle!!.rendered
             articleDate.text = currentArticles.articlesTimeStamp

@@ -26,6 +26,7 @@ class Articles {
     var articlesFullText: Content? = null
 
 
+    @SerializedName("jetpack_featured_media_url")
     @ColumnInfo(name = "articles_thumbnail")
     var articlesThumbnailImage: String? = null
 
@@ -40,7 +41,9 @@ class Articles {
 
 
 
+
 }
+
 
 class Title{
 
