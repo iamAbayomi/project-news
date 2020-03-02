@@ -94,7 +94,7 @@ class HomeFragment : Fragment() {
                             "date "  + postsResponse.articlesTimeStamp + "\n" +
                             "content \n" + postsResponse.articlesFullText!!.rendered
 
-                  //  textView!!.text = Jsoup.parse(stringBuilder).text()
+                   textView!!.text = Jsoup.parse(stringBuilder).text()
 
 
                 }
