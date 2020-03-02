@@ -5,10 +5,11 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
 import com.oladiniabayomi.digitalnews.content.Content
+import java.io.Serializable
 import java.util.*
 
 @Entity(tableName = "articles_table")
-class Articles {
+class Articles : Serializable {
 
 
     @SerializedName("id")
@@ -45,7 +46,7 @@ class Articles {
 }
 
 
-class Title{
+class Title: Serializable {
 
     @SerializedName("rendered")
     var rendered : String? = null

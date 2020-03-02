@@ -8,12 +8,11 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.bumptech.glide.request.RequestOptions
 import com.oladiniabayomi.digitalarticles.articles.Articles
 import com.oladiniabayomi.digitalnews.R
-import java.lang.reflect.Array
+import com.oladiniabayomi.digitalnews.interfaces.OnItemClickListener
 
-public class ArticlesRecyclerViewAdapter(var context: Context, var currentArticles: ArrayList<Articles>?) : RecyclerView.Adapter<ArticlesRecyclerViewHolder>() {
+public class ArticlesRecyclerViewAdapter(var context: Context, var currentArticles: ArrayList<Articles>?, val listener: OnItemClickListener ) : RecyclerView.Adapter<ArticlesRecyclerViewHolder>() {
 
         private val mInflater: LayoutInflater = LayoutInflater.from(context)
 
@@ -31,7 +30,7 @@ public class ArticlesRecyclerViewAdapter(var context: Context, var currentArticl
 
         override fun onBindViewHolder(holder: ArticlesRecyclerViewHolder, position: Int) {
             var currentArticles : Articles = currentArticles!![position]
-            holder.bindTo(currentArticles, context)
+            holder.bindTo(currentArticles, context, listener)
         }
     }
 
@@ -44,7 +43,7 @@ public class ArticlesRecyclerViewAdapter(var context: Context, var currentArticl
 
 
 
-        fun bindTo(currentArticles: Articles, context: Context) {
+        fun bindTo(currentArticles: Articles, context: Context, listener: OnItemClickListener) {
          //   articleImage.setImageResource()
 
             Glide.with(context)
@@ -54,6 +53,9 @@ public class ArticlesRecyclerViewAdapter(var context: Context, var currentArticl
             articleTitle.text = currentArticles.articlesTitle!!.rendered
             articleDate.text = currentArticles.articlesTimeStamp
 
+            itemView.setOnClickListener{
+                listener.onItemClick( currentArticles)
+            }
         }
 
 

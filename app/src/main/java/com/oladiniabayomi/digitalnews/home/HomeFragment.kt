@@ -15,6 +15,7 @@ import com.oladiniabayomi.digitalarticles.articles.Articles
 import com.oladiniabayomi.digitalnews.R
 import com.oladiniabayomi.digitalnews.articles.ArticlesRecyclerViewAdapter
 import com.oladiniabayomi.digitalnews.detailed_article.DetailedArticleActivity
+import com.oladiniabayomi.digitalnews.interfaces.OnItemClickListener
 import com.oladiniabayomi.digitalnews.network.PostsService
 import kotlinx.android.synthetic.main.fragment_home.*
 import org.jsoup.Jsoup
@@ -24,7 +25,8 @@ import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-class HomeFragment : Fragment() {
+class HomeFragment : Fragment(), OnItemClickListener  {
+
 
     private lateinit var homeViewModel: HomeViewModel
     //RecyclerView Variables
@@ -44,15 +46,11 @@ class HomeFragment : Fragment() {
 
         val root = inflater.inflate(R.layout.fragment_home, container, false)
 
-       // val textView = root.findViewById<TextView>(R.id.textView)
-
-
-
         recyclerView = root.findViewById(R.id.home_recyclerview)
         layoutManager = LinearLayoutManager(activity)
 
         articlesRecyclerViewAdapter =
-            context?.let { ArticlesRecyclerViewAdapter(it, currentArticles) }
+            context?.let { ArticlesRecyclerViewAdapter(it, currentArticles , this) }
 
 
         recyclerView.layoutManager = layoutManager
@@ -71,6 +69,13 @@ class HomeFragment : Fragment() {
 
 
         return root
+    }
+
+    override fun onItemClick(articles: Articles) {
+        val intent = Intent( activity , DetailedArticleActivity::class.java)
+        intent.putExtra("articles", articles  )
+        startActivity(intent)
+
     }
 
     private fun getCurrentData() {
