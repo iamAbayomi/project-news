@@ -43,6 +43,8 @@ class ArticlesRecyclerViewAdapter(context: Context, var currentArticles: ArrayLi
 
         fun bindTo(currentArticles: Articles) {
          //   articleImage.setImageResource()
+
+
             articleTitle.text = currentArticles.articlesTitle!!.rendered
             articleDate.text = currentArticles.articlesTimeStamp
 
