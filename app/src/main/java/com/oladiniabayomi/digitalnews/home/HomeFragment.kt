@@ -51,14 +51,14 @@ class HomeFragment : Fragment() {
         recyclerView = root.findViewById(R.id.home_recyclerview)
         layoutManager = LinearLayoutManager(activity)
 
-        getCurrentData()
-
         articlesRecyclerViewAdapter =
             context?.let { ArticlesRecyclerViewAdapter(it, currentArticles) }
 
 
         recyclerView.layoutManager = layoutManager
         recyclerView.adapter =  articlesRecyclerViewAdapter
+
+        getCurrentData()
 
 
 
