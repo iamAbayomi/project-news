@@ -59,15 +59,6 @@ class HomeFragment : Fragment(), OnItemClickListener  {
         getCurrentData()
 
 
-/*
-        textView.setOnClickListener {
-            val intent = Intent( activity , DetailedArticleActivity::class.java)
-            startActivity(intent)
-        }*/
-
-
-
-
         return root
     }
 
@@ -93,14 +84,6 @@ class HomeFragment : Fragment(), OnItemClickListener  {
 
                     currentArticles.addAll(response.body())
 
-             /*       val  postsResponse = response.body()[1]
-
-                    val stringBuilder = "int " + postsResponse.articlesTitle + "\n" +
-                            "date "  + postsResponse.articlesTimeStamp + "\n" +
-                            "content \n" + postsResponse.articlesFullText!!.rendered
-
-                  // textView!!.text = Jsoup.parse(stringBuilder).text()
-*/
                     articlesRecyclerViewAdapter!!.notifyDataSetChanged()
                 }
             }
