@@ -8,13 +8,13 @@
     <fragment
         android:id="@+id/navigation_home"
         android:name="com.oladiniabayomi.digitalnews.home.HomeFragment"
-        android:label="@string/title_home"
+        android:label="Tell"
         tools:layout="@layout/fragment_home" />
 
     <fragment
-        android:id="@+id/navigation_dashboard"
+        android:id="@+id/navigation_save"
         android:name="com.oladiniabayomi.digitalnews.saved_articles.SavedArticlesFragment"
-        android:label="@string/title_dashboard"
+        android:label="@string/saved"
         tools:layout="@layout/fragment_saved" />
 <!---->
 
