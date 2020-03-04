@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentStatePagerAdapter
@@ -76,10 +77,12 @@ class HomeFragment : Fragment(), OnItemClickListener {
             context?.let { ArticlesRecyclerViewAdapter(it, currentArticles, this) }
         recyclerView.layoutManager = layoutManager
         recyclerView.adapter = articlesRecyclerViewAdapter
+
         for ( x in 0..5 ){
             fragments.add(FeaturedFragment().newInstance("https://i2.wp.com/www.tell.com.ng/wp-content/uploads/2020/02/images-1-1.jpeg?fit=610%2C503&ssl=1",
                 "Loading"))
         }
+
         //Call for the retrofit class
         getCurrentData()
 
@@ -110,25 +113,29 @@ class HomeFragment : Fragment(), OnItemClickListener {
                 call: Call<List<Articles>>?,
                 response: Response<List<Articles>>?
             ) { if (response!!.code() == 200) {
-                    currentArticles.addAll(response.body())
+                 //   currentArticles.addAll(response.body())
 
-
-                 homeViewModel.insert(currentArticles[1])
+               //  homeViewModel.insert(currentArticles[1])
                     //Adding Articles to database
+
+                Toast.makeText(context, response.body()[1].toString(), Toast.LENGTH_LONG).show()
+
                     for (x in 0 until currentArticles.size) {
-                        homeViewModel.insert(currentArticles[x])
-                       // insert(currentArticles = currentArticles[x], cur)
+                      //  homeViewModel.insert(currentArticles[x])
+
                     }
 
                     //Clearing Fragments From Database
-                    fragments.clear()
+                   // fragments.clear()
 
                     for ( x in 0..5 ){
-                        fragments.add(FeaturedFragment().newInstance(currentArticles[x].articlesThumbnailImage!!,
-                            currentArticles[x].articlesTitle!!.rendered!!))
+                      //  fragments.add(FeaturedFragment().newInstance(currentArticles[x].articlesThumbnailImage!!,
+                        //    currentArticles[x].articlesTitle!!.rendered!!))
                     }
-                    mAdapter!!.notifyDataSetChanged()
-                    articlesRecyclerViewAdapter!!.notifyDataSetChanged() } }
+
+              //      mAdapter!!.notifyDataSetChanged()
+                  //  articlesRecyclerViewAdapter!!.notifyDataSetChanged()
+            } }
 
 
             override fun onFailure(call: Call<List<Articles>>?, t: Throwable?) {
@@ -137,13 +144,6 @@ class HomeFragment : Fragment(), OnItemClickListener {
         })
     }
 
-    suspend  fun insert(currentArticles: Articles ,size: Int) {
-        //Adding Articles to database
-        for (x in  0..size) {
-            homeViewModel.insert(currentArticles)
-        }
-
-    }
 
      class CustomPagerAdapter2(fm: FragmentManager, frags: List<Fragment>) : FragmentStatePagerAdapter(fm) {
         var mFrags : List<Fragment> = frags
