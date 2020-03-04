@@ -23,22 +23,22 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
 
     // The ViewModel maintains a reference to the repository to get data.
     private  val repository: ArticleRepository
-    private  val savedRepository: SavedArticleRepository
+  //  private  val savedRepository: SavedArticleRepository
 
 
     // LiveData gives us updated words when they change.
     val allArticles : LiveData<List<Articles>>
-    val allSavedArticles: LiveData<List<SavedArticles>>
+   // val allSavedArticles: LiveData<List<SavedArticles>>
 
     init {
 
         val articlesDao = ArticlesRoomDatabase.getDatabase(application, viewModelScope).articlesDao()
-        repository = ArticleRepository(articlesDao)
+        repository = ArticleRepository(articlesDao, application)
         allArticles = repository.allArticles
-
+/*
         val savedArticlesDao = ArticlesRoomDatabase.getDatabase(application, viewModelScope).savedArticlesDao()
         savedRepository = SavedArticleRepository(savedArticlesDao)
-        allSavedArticles = savedRepository.allSaveArticles
+        allSavedArticles = savedRepository.allSaveArticles*/
     }
 
 
@@ -54,7 +54,7 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     fun insertSaved(savedArticles: SavedArticles) = viewModelScope.launch {
-        savedRepository.insertIntoSaved(savedArticles)
+       // savedRepository.insertIntoSaved(savedArticles)
     }
 
 }

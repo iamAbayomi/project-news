@@ -89,7 +89,7 @@ class HomeFragment : Fragment(), OnItemClickListener {
         })
 
         //Call for the retrofit class
-        getCurrentData()
+        //getCurrentData()
 
         mViewPager!!.adapter= mAdapter
         mIndicator = MyPageIndicator(activity!!.applicationContext, mLinearLayout!!, mViewPager!! , R.drawable.tab_selector)
