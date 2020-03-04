@@ -63,7 +63,6 @@ class HomeFragment : Fragment(), OnItemClickListener {
         mLinearLayout = root.findViewById(R.id.pagesContainer)
 
 
-
         //RecyclerView implementation
         recyclerView = root.findViewById(R.id.home_recyclerview)
         layoutManager = LinearLayoutManager(activity)
@@ -77,7 +76,6 @@ class HomeFragment : Fragment(), OnItemClickListener {
                 "Loading"))
         }
 
-
         //Call for the retrofit class
         getCurrentData()
 
@@ -85,7 +83,6 @@ class HomeFragment : Fragment(), OnItemClickListener {
 
 
         mIndicator = MyPageIndicator(activity!!.applicationContext, mLinearLayout!!, mViewPager!! , R.drawable.tab_selector)
-
         mIndicator!!.setPageCount(fragments.size)
         mIndicator!!.show()
 

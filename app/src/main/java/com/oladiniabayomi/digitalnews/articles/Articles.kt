@@ -15,7 +15,7 @@ class Articles : Serializable {
     @SerializedName("id")
     @PrimaryKey
     @ColumnInfo(name = "id")
-    val articlesId: Int? = null
+    var articlesId: Int? = null
 
     @SerializedName("title")
     @ColumnInfo(name = "title")
@@ -42,10 +42,7 @@ class Articles : Serializable {
 }
 
 
-class Title: Serializable {
-
+class Title(
     @SerializedName("rendered")
     var rendered : String? = null
-
-
-}
+): Serializable

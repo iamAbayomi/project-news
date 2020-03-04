@@ -14,7 +14,7 @@ class ArticleRepository( private val articlesDao: ArticlesDao){
     // Room executes all queries on a separate thread.
     // Observed LiveData will notify the observer when the data has changed.
 
-    val allArticles : LiveData<ArrayList<Articles>> = articlesDao.getAllArticles()
+    val allArticles : LiveData<List<Articles>> = articlesDao.getAllArticles()
 
 
     suspend fun insert(articles: Articles){

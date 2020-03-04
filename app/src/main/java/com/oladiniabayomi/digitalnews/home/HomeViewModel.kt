@@ -23,7 +23,7 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
     // The ViewModel maintains a reference to the repository to get data.
     private  val repository: ArticleRepository
     // LiveData gives us updated words when they change.
-    val allArticles : LiveData<ArrayList<Articles>>
+    val allArticles : LiveData<List<Articles>>
 
     init {
         val articlesDao = ArticlesRoomDatabase.getDatabase(application).articlesDao()
