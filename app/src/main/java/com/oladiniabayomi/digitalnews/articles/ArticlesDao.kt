@@ -1,5 +1,6 @@
 package com.oladiniabayomi.digitalnews.articles
 
+import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
@@ -11,6 +12,6 @@ interface ArticlesDao {
     fun insertArticles( vararg articles: Articles)
 
     @Query("SELECT * FROM articles_table")
-    fun getAllArticles() : List<Articles>
+    fun getAllArticles() : LiveData<List<Articles>>
 
 }

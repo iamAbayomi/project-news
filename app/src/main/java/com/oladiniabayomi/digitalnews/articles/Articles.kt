@@ -14,26 +14,22 @@ class Articles : Serializable {
 
     @SerializedName("id")
     @PrimaryKey
-    @ColumnInfo(name = "articles_id")
+    @ColumnInfo(name = "id")
     val articlesId: Int? = null
 
     @SerializedName("title")
-    @ColumnInfo(name = "articles_title")
+    @ColumnInfo(name = "title")
     var articlesTitle: Title? = null
 
 
     @SerializedName("content")
-    @ColumnInfo(name = "articles_fulltext")
+    @ColumnInfo(name = "content")
     var articlesFullText: Content? = null
 
 
     @SerializedName("jetpack_featured_media_url")
     @ColumnInfo(name = "articles_thumbnail")
     var articlesThumbnailImage: String? = null
-
-
-    @ColumnInfo(name = "articles_imageUrl")
-    var articlesImage: String? = null
 
 
     @SerializedName("date")
