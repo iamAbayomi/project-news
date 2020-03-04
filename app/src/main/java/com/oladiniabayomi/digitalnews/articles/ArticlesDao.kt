@@ -9,7 +9,7 @@ import com.oladiniabayomi.digitalarticles.articles.Articles
 @Dao
 interface ArticlesDao {
     @Insert
-    fun insertArticles( vararg articles: Articles)
+    suspend fun insertArticles( vararg articles: Articles)
 
     @Query("SELECT * FROM articles_table")
     fun getAllArticles() : LiveData<List<Articles>>

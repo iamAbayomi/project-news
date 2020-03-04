@@ -12,8 +12,9 @@ import java.util.*
 class Articles : Serializable {
 
 
-    @SerializedName("id")
-    @PrimaryKey
+   // @SerializedName("id")
+    @PrimaryKey(autoGenerate = true)
+
     @ColumnInfo(name = "id")
     var articlesId: Int? = null
 

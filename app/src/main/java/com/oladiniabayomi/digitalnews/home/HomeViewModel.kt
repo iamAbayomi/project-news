@@ -26,7 +26,7 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
     val allArticles : LiveData<List<Articles>>
 
     init {
-        val articlesDao = ArticlesRoomDatabase.getDatabase(application).articlesDao()
+        val articlesDao = ArticlesRoomDatabase.getDatabase(application, viewModelScope).articlesDao()
         repository = ArticleRepository(articlesDao)
         allArticles = repository.allArticles
     }

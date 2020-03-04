@@ -19,7 +19,7 @@ abstract class ArticlesRoomDatabase : RoomDatabase() {
         @Volatile
         private var INSTANCE: ArticlesRoomDatabase? = null
 
-        fun getDatabase(context: Context): ArticlesRoomDatabase {
+        fun getDatabase(context: Context, scope: CoroutineScope): ArticlesRoomDatabase {
             val tempInstance = INSTANCE
             if (tempInstance != null) {
                 return tempInstance
