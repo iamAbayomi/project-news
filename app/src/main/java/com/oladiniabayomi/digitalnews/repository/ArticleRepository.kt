@@ -30,48 +30,42 @@ class ArticleRepository( private val articlesDao: ArticlesDao){
         articlesDao.insertArticles(articles)
     }
 
-    private fun getCurrentData() {
+
+
+    suspend  fun getArticles() : LiveData<List<Articles>>{
+
+        refreshArticles()
+
+        return allArticles
+    }
+
+
+
+    suspend fun refreshArticles() {
         val retrofit = Retrofit.Builder()
             .baseUrl("http://www.tell.com.ng/")
             .addConverterFactory(GsonConverterFactory.create())
             .build()
         val service = retrofit.create(PostsService::class.java)
-        val call = service.getPosts()
 
+        val call = service.getPosts()
         val data = MutableLiveData<List<Articles>>()
 
-        call.enqueue(object : Callback<List<Articles>> {
 
+
+        call.enqueue(object : Callback<List<Articles>> {
             override fun onResponse(call: Call<List<Articles>>?, response: Response<List<Articles>>?) {
                 if (response!!.code() == 200)
                 {
-
                     data.value = response.body()
 
-                //   currentArticles.addAll(response.body())
-                //  homeViewModel.insert(currentArticles[1])
-                //Adding Articles to database
 
-                for (x in 0 until currentArticles.size) {
-                    //  homeViewModel.insert(currentArticles[x])
+                 }
 
                 }
-
-                //Clearing Fragments From Database
-                // fragments.clear()
-
-                for ( x in 0..5 ){
-                    //  fragments.add(FeaturedFragment().newInstance(currentArticles[x].articlesThumbnailImage!!,
-                    //    currentArticles[x].articlesTitle!!.rendered!!))
-                }
-
-                //      mAdapter!!.notifyDataSetChanged()
-                //  articlesRecyclerViewAdapter!!.notifyDataSetChanged()
-            } }
-
 
             override fun onFailure(call: Call<List<Articles>>?, t: Throwable?) {
-                //   textView!!.text = t!!.message
+
             }
         })
     }
