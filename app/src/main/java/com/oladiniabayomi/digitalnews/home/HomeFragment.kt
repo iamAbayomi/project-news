@@ -62,10 +62,8 @@ class HomeFragment : Fragment(), OnItemClickListener {
 
         homeViewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
 
-        homeViewModel.allArticles.observe( viewLifecycleOwner, Observer {
 
-        })
-
+        //Adapter initialization
         mAdapter = CustomPagerAdapter2(activity!!.supportFragmentManager,fragments)
         mViewPager = root.findViewById(R.id.viewPager)
         mLinearLayout = root.findViewById(R.id.pagesContainer)
@@ -75,6 +73,7 @@ class HomeFragment : Fragment(), OnItemClickListener {
         layoutManager = LinearLayoutManager(activity)
         articlesRecyclerViewAdapter =
             context?.let { ArticlesRecyclerViewAdapter(it, currentArticles, this) }
+
         recyclerView.layoutManager = layoutManager
         recyclerView.adapter = articlesRecyclerViewAdapter
 
@@ -82,6 +81,12 @@ class HomeFragment : Fragment(), OnItemClickListener {
             fragments.add(FeaturedFragment().newInstance("https://i2.wp.com/www.tell.com.ng/wp-content/uploads/2020/02/images-1-1.jpeg?fit=610%2C503&ssl=1",
                 "Loading"))
         }
+
+        homeViewModel.allArticles.observe(viewLifecycleOwner, Observer { articles ->
+
+            articles.let { articlesRecyclerViewAdapter!!.setArticles(ArrayList(it))}
+
+        })
 
         //Call for the retrofit class
         getCurrentData()
