@@ -9,9 +9,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import com.oladiniabayomi.digitalarticles.articles.Articles
-import com.oladiniabayomi.digitalnews.articles.ArticlesDao
+import com.oladiniabayomi.digitalarticles.articles.SavedArticles
 import com.oladiniabayomi.digitalnews.articles.ArticlesRoomDatabase
 import com.oladiniabayomi.digitalnews.repository.ArticleRepository
+import com.oladiniabayomi.digitalnews.repository.SavedArticleRepository
 
 class HomeViewModel(application: Application) : AndroidViewModel(application) {
 
@@ -22,13 +23,22 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
 
     // The ViewModel maintains a reference to the repository to get data.
     private  val repository: ArticleRepository
+    private  val savedRepository: SavedArticleRepository
+
+
     // LiveData gives us updated words when they change.
     val allArticles : LiveData<List<Articles>>
+    val allSavedArticles: LiveData<List<SavedArticles>>
 
     init {
+
         val articlesDao = ArticlesRoomDatabase.getDatabase(application, viewModelScope).articlesDao()
         repository = ArticleRepository(articlesDao)
         allArticles = repository.allArticles
+
+        val savedArticlesDao = ArticlesRoomDatabase.getDatabase(application, viewModelScope).savedArticlesDao()
+        savedRepository = SavedArticleRepository(savedArticlesDao)
+        allSavedArticles = savedRepository.allSaveArticles
     }
 
 
@@ -42,4 +52,9 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
     fun insert(articles: Articles) = viewModelScope.launch {
         repository.insert(articles)
     }
+
+    fun insertSaved(savedArticles: SavedArticles) = viewModelScope.launch {
+        savedRepository.insertIntoSaved(savedArticles)
+    }
+
 }

@@ -6,14 +6,17 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import com.oladiniabayomi.digitalarticles.articles.Articles
+import com.oladiniabayomi.digitalarticles.articles.SavedArticles
 import com.oladiniabayomi.digitalnews.converters.Converters
+import com.oladiniabayomi.digitalnews.saved_articles.SavedArticlesDao
 import kotlinx.coroutines.CoroutineScope
 
-@Database(entities = [Articles::class], version = 1, exportSchema = false)
+@Database(entities = [Articles::class, SavedArticles::class], version = 1, exportSchema = false)
 @TypeConverters(Converters::class)
 abstract class ArticlesRoomDatabase : RoomDatabase() {
 
     abstract fun articlesDao(): ArticlesDao
+    abstract fun savedArticlesDao() : SavedArticlesDao
 
     companion object {
         @Volatile

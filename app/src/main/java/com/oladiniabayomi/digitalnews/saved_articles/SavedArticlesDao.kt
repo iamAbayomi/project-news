@@ -1,17 +1,19 @@
 package com.oladiniabayomi.digitalnews.saved_articles
 
+import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
-import com.oladiniabayomi.digitalarticles.articles.Articles
+import com.oladiniabayomi.digitalarticles.articles.SavedArticles
 
 @Dao
 interface SavedArticlesDao {
-    @Insert
-    fun insertArticles( vararg savedArticles: Articles)
 
-    @Query("SELECT * FROM articles_table")
-    fun getAllArticles(): List<Articles>
+    @Insert
+    suspend fun insertSaved( vararg savedArticles: SavedArticles)
+
+    @Query("SELECT * FROM saved_table")
+    fun getAllSavedArticles() : LiveData<List<SavedArticles>>
 
 
 }
