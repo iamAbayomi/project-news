@@ -12,6 +12,6 @@ interface ArticlesDao {
     fun insertArticles( vararg articles: Articles)
 
     @Query("SELECT * FROM articles_table")
-    fun getAllArticles() : LiveData<List<Articles>>
+    fun getAllArticles() : LiveData<ArrayList<Articles>>
 
 }
