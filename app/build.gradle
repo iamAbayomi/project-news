@@ -32,6 +32,9 @@ repositories {
     mavenCentral()
 }
 dependencies {
+
+
+
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation 'androidx.appcompat:appcompat:1.0.2'
@@ -61,6 +64,19 @@ dependencies {
 
     // Coroutines
     api "org.jetbrains.kotlinx:kotlinx-coroutines-android:$rootProject.coroutines"
+
+
+    // Kotlin standard library
+
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$rootProject.$kotlin_version"
+
+    // Coroutines
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$rootProject.$coroutines_android_version"
+
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$rootProject.$coroutines_android_version"
+
+
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.0.1'
 
     // UI
     implementation "com.google.android.material:material:$rootProject.materialVersion"

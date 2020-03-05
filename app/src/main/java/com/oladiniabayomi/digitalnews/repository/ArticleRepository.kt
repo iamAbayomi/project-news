@@ -27,7 +27,8 @@ class ArticleRepository( private val articlesDao: ArticlesDao, var context: Appl
     // Observed LiveData will notify the observer when the data has changed.
     //val allArticles : LiveData<List<Articles>> = articlesDao.getAllArticles()
      val allArticles : LiveData<List<Articles>> = getArticles()
-    val FRESH_TIMEOUT_IN_MINUTES = 2
+
+     val FRESH_TIMEOUT_IN_MINUTES = 2
 
     //private val executor=  Executor()
 
@@ -35,12 +36,12 @@ class ArticleRepository( private val articlesDao: ArticlesDao, var context: Appl
         articlesDao.insertArticles(articles)
     }
 
-    suspend fun getArticles() : LiveData<List<Articles>>{
+     fun getArticles() : LiveData<List<Articles>>{
         return  refreshArticles()
     }
 
      //Call for Retrofit
-   suspend  fun refreshArticles() : LiveData<List<Articles>> {
+    fun refreshArticles() : LiveData<List<Articles>> {
         val retrofit = Retrofit.Builder()
             .baseUrl("http://www.tell.com.ng/")
             .addConverterFactory(GsonConverterFactory.create())
@@ -57,7 +58,11 @@ class ArticleRepository( private val articlesDao: ArticlesDao, var context: Appl
                 {
                     data.value = response.body()
                     Toast.makeText(context, response.body()[1].toString(), Toast.LENGTH_LONG).show()
+
+
+
                     articlesDao.insertArticles(response.body()[1])
+
                     isInitialize = true
                 }
              }
