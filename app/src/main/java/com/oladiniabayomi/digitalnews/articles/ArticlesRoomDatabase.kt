@@ -26,21 +26,21 @@ abstract class ArticlesRoomDatabase : RoomDatabase() {
         @Volatile
         private var INSTANCE: ArticlesRoomDatabase? = null
 
-        fun getDatabase(context: Context, scope: CoroutineScope): ArticlesRoomDatabase {
+        fun getDatabase(context: Context,
+                scope: CoroutineScope):
+                ArticlesRoomDatabase {
 
 
-            val tempInstance = INSTANCE
-            if (tempInstance != null) {
-                return tempInstance
-            }
-            synchronized(this) {
+          return INSTANCE ?: synchronized(this) {
                 val instance = Room.databaseBuilder(
                     context.applicationContext,
                     ArticlesRoomDatabase::class.java,
                     "articles_database"
-                ).build()
+                ).addCallback(ArticlesDatabaseCallback(scope))
+                    .build()
                 INSTANCE = instance
-                return instance
+
+                 instance
             }
 
 
@@ -61,11 +61,12 @@ abstract class ArticlesRoomDatabase : RoomDatabase() {
 
         }
 
+        /*
+        *  Populate db when db created
+        * */
         suspend fun populateDatabase(articlesDao: ArticlesDao) {
 
             var instatiate = Instantiate()
-
-
             instatiate.instantiate = true
             articlesDao.instatiate(instatiate)
 

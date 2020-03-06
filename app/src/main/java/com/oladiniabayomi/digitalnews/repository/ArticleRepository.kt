@@ -44,7 +44,7 @@ class ArticleRepository( private val articlesDao: ArticlesDao, var context: Appl
    // val allArticles : LiveData<List<Articles>> =articlesDao.getAllArticles()
      val allArticles : LiveData<List<Articles>> = getArticles()
 
-    var isInitialize : Boolean = false
+    var isInitialize : Boolean = isInstaite()
 
     //articlesDao.getAllArticles()
 
@@ -73,6 +73,8 @@ class ArticleRepository( private val articlesDao: ArticlesDao, var context: Appl
 
          //return  refreshArticles()
     }
+
+
      //Call for Retrofit
      fun refreshArticles() : LiveData<List<Articles>> {
         val retrofit = Retrofit.Builder()
@@ -103,9 +105,9 @@ class ArticleRepository( private val articlesDao: ArticlesDao, var context: Appl
                     instantiate.instantiate = true
 
                     coroutineScope.launch(Dispatchers.Main) {
-                      //  articlesDao.instatiate(instantiate)
+                        articlesDao.reInstatiate(instantiate)
 
-                        isInitialize =  articlesDao.isInstatiate()
+                       // isInitialize =  articlesDao.isInstatiate()
                     }
 
 
@@ -123,6 +125,12 @@ class ArticleRepository( private val articlesDao: ArticlesDao, var context: Appl
         return  data
     }
 
+     fun isInstaite() : Boolean{
+        coroutineScope.launch(Dispatchers.Main) {
+            isInitialize =  articlesDao.isInstatiate()
+        }
+        return  isInitialize
+    }
 
 
 }
