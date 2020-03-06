@@ -4,29 +4,59 @@ import android.app.Application
 import android.content.Context
 import android.widget.Toast
 import androidx.annotation.WorkerThread
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.*
 import com.oladiniabayomi.digitalarticles.articles.Articles
 import com.oladiniabayomi.digitalarticles.articles.SavedArticles
 import com.oladiniabayomi.digitalnews.articles.ArticlesDao
+import com.oladiniabayomi.digitalnews.articles.Instantiate
 import com.oladiniabayomi.digitalnews.network.PostsService
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
+
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.Executor
+import androidx.lifecycle.LifecycleCoroutineScope as LifecycleCoroutineScope1
 
 // Declares the DAO as a private property in the constructor. Pass in the DAO
 // instead of the whole database, because you only need access to the DAO
 class ArticleRepository( private val articlesDao: ArticlesDao, var context: Application){
 
-    var isInitialize = false
+    var currentArticles = ArrayList<Articles>()
+    var instantiate = Instantiate ()
+
+
+    companion object{
+       // var isInitialize : Boolean = false
+    }
+
+
+    private val parentJob = Job()
+    private val coroutineScope = CoroutineScope(Dispatchers.Main + parentJob)
 
     // Room executes all queries on a separate thread.
     // Observed LiveData will notify the observer when the data has changed.
-    //val allArticles : LiveData<List<Articles>> = articlesDao.getAllArticles()
+   // val allArticles : LiveData<List<Articles>> =articlesDao.getAllArticles()
      val allArticles : LiveData<List<Articles>> = getArticles()
+
+    var isInitialize : Boolean = false
+
+    //articlesDao.getAllArticles()
+
+    /*
+    val allArticles : LiveData<List<Articles>> =  liveData {
+        getArticles()
+    }
+    */
+
+    //getArticles()
+
+    //val allArtice =
 
      val FRESH_TIMEOUT_IN_MINUTES = 2
 
@@ -36,12 +66,15 @@ class ArticleRepository( private val articlesDao: ArticlesDao, var context: Appl
         articlesDao.insertArticles(articles)
     }
 
-     fun getArticles() : LiveData<List<Articles>>{
-        return  refreshArticles()
-    }
 
+     fun  getArticles() : LiveData<List<Articles>> {
+
+        return refreshArticles()
+
+         //return  refreshArticles()
+    }
      //Call for Retrofit
-    fun refreshArticles() : LiveData<List<Articles>> {
+     fun refreshArticles() : LiveData<List<Articles>> {
         val retrofit = Retrofit.Builder()
             .baseUrl("http://www.tell.com.ng/")
             .addConverterFactory(GsonConverterFactory.create())
@@ -51,28 +84,45 @@ class ArticleRepository( private val articlesDao: ArticlesDao, var context: Appl
         val call = service.getPosts()
         var data = MutableLiveData<List<Articles>>()
 
+
          if (!isInitialize){
         call.enqueue(object : Callback<List<Articles>> {
             override fun onResponse(call: Call<List<Articles>>?, response: Response<List<Articles>>?) {
-                if (response!!.code() == 200)
-                {
+                if (response!!.code() == 200) {
                     data.value = response.body()
+                    currentArticles.addAll(response.body())
                     Toast.makeText(context, response.body()[1].toString(), Toast.LENGTH_LONG).show()
 
+                    for (x in 0 until currentArticles.size) {
+                        coroutineScope.launch(Dispatchers.Main) {
+                            articlesDao.insertArticles(currentArticles[x])
+                        }
+                    }
 
 
-                    articlesDao.insertArticles(response.body()[1])
+                    instantiate.instantiate = true
 
-                    isInitialize = true
-                }
-             }
+                    coroutineScope.launch(Dispatchers.Main) {
+                      //  articlesDao.instatiate(instantiate)
+
+                        isInitialize =  articlesDao.isInstatiate()
+                    }
+
+
+                }}
             override fun onFailure(call: Call<List<Articles>>?, t: Throwable?) {
+
             }
         })
-        }else{
+
+        }else
+         {
              data = articlesDao.getAllArticles() as MutableLiveData<List<Articles>>
          }
 
         return  data
     }
+
+
+
 }

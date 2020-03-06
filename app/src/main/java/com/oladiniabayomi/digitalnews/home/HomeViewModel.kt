@@ -28,13 +28,14 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
 
     // LiveData gives us updated words when they change.
     val allArticles : LiveData<List<Articles>>
-   // val allSavedArticles: LiveData<List<SavedArticles>>
+    //val allSavedArticles: LiveData<List<Articles>>
 
     init {
 
         val articlesDao = ArticlesRoomDatabase.getDatabase(application, viewModelScope).articlesDao()
         repository = ArticleRepository(articlesDao, application)
         allArticles = repository.allArticles
+       // allSavedArticles = repository.currentArticles
 /*
         val savedArticlesDao = ArticlesRoomDatabase.getDatabase(application, viewModelScope).savedArticlesDao()
         savedRepository = SavedArticleRepository(savedArticlesDao)
@@ -50,6 +51,7 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
      * viewModelScope which we can use here.
      */
     fun insert(articles: Articles) = viewModelScope.launch {
+
         repository.insert(articles)
     }
 
