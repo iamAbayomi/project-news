@@ -6,7 +6,10 @@ import androidx.room.PrimaryKey
 
 
 @Entity(tableName = "instantiate")
-class Instantiate {
+class Instantiate(
+    @ColumnInfo(name = "time")
+    var time: Int
+) {
 
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id")

@@ -66,7 +66,7 @@ abstract class ArticlesRoomDatabase : RoomDatabase() {
         * */
         suspend fun populateDatabase(articlesDao: ArticlesDao) {
 
-            var instatiate = Instantiate()
+            var instatiate = Instantiate(0)
          //   instatiate.instantiate = true
            // articlesDao.instatiate(instatiate)
 

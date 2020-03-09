@@ -25,7 +25,7 @@ class SharedPreferencesHelper {
 
     fun getSharedPrefs(context: Application): String?{
         val   sharedPreferences : SharedPreferences = context.getSharedPreferences(sharedPref, MODE_PRIVATE)
-       var  text =  sharedPreferences.getString(key, sentRequest)
+       var  text =  sharedPreferences.getString(key, "")
 
        return text
     }

@@ -13,9 +13,11 @@ interface ArticlesDao {
     @Insert
     suspend fun insertArticles( vararg articles: Articles)
 
-
     @Query("SELECT * FROM articles_table")
     fun getAllArticles() : LiveData<List<Articles>>
+
+    @Query("DELETE  FROM articles_table")
+    suspend fun deleteAll()
 
 
     @Insert
@@ -24,11 +26,12 @@ interface ArticlesDao {
     @Update
     suspend fun reInstatiate( instantiate: Instantiate )
 
-    @Query("Select instantiated from instantiate ")
-    suspend fun isInstatiate(): Boolean
+    @Query("Select time from instantiate ")
+    suspend fun lastTime(): Int
 
     @Query("DELETE  FROM articles_table")
-    suspend fun deleteAll()
+    suspend fun deletetime()
+
 
 
 }
