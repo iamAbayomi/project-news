@@ -14,7 +14,6 @@ class SavedArticles : Serializable {
 
    // @SerializedName("id")
     @PrimaryKey(autoGenerate = true)
-
     @ColumnInfo(name = "id")
     var articlesId: Int? = null
 

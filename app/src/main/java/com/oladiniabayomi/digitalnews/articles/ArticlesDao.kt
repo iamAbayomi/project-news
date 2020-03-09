@@ -6,6 +6,7 @@ import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Update
 import com.oladiniabayomi.digitalarticles.articles.Articles
+import com.oladiniabayomi.digitalarticles.articles.SavedArticles
 
 @Dao
 interface ArticlesDao {
@@ -19,7 +20,7 @@ interface ArticlesDao {
     @Query("DELETE  FROM articles_table")
     suspend fun deleteAll()
 
-
+    //Instantiate methods
     @Insert
     suspend fun instatiate( instantiate: Instantiate )
 
