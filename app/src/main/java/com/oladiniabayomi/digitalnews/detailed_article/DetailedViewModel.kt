@@ -19,10 +19,14 @@ class DetailedViewModel(application: Application) : AndroidViewModel(application
 
     }
 
+
     fun insertArticles(savedArticles: SavedArticles) = viewModelScope.launch{
         repository.insertIntoSaved(savedArticles)
     }
 
+    fun isArticlesPresent(title: String): LiveData<Int>{
+        return repository.isArticlePresent(title)
+    }
 
     fun getSingleArticle(title : String) : LiveData<SavedArticles> {
 
