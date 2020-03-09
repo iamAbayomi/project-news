@@ -7,6 +7,7 @@ import androidx.annotation.WorkerThread
 import androidx.lifecycle.*
 import com.oladiniabayomi.digitalarticles.articles.Articles
 import com.oladiniabayomi.digitalarticles.articles.SavedArticles
+import com.oladiniabayomi.digitalnews.SharedPreferencesHelper
 import com.oladiniabayomi.digitalnews.articles.ArticlesDao
 import com.oladiniabayomi.digitalnews.articles.Instantiate
 import com.oladiniabayomi.digitalnews.network.PostsService
@@ -27,51 +28,33 @@ import androidx.lifecycle.LifecycleCoroutineScope as LifecycleCoroutineScope1
 // instead of the whole database, because you only need access to the DAO
 class ArticleRepository( private val articlesDao: ArticlesDao, var context: Application){
 
-    var currentArticles = ArrayList<Articles>()
-    var instantiate = Instantiate ()
-
-
-    companion object{
-       // var isInitialize : Boolean = false
-    }
-
-
     private val parentJob = Job()
     private val coroutineScope = CoroutineScope(Dispatchers.Main + parentJob)
+    var currentArticles = ArrayList<Articles>()
+    var instantiate = Instantiate ()
+    val allArticles : LiveData<List<Articles>> = getArticles()
+    var isInitialize : Boolean = false
+    val FRESH_TIMEOUT_IN_MINUTES = 2
 
-    // Room executes all queries on a separate thread.
-    // Observed LiveData will notify the observer when the data has changed.
-   // val allArticles : LiveData<List<Articles>> =articlesDao.getAllArticles()
-     val allArticles : LiveData<List<Articles>> = getArticles()
-
-    var isInitialize : Boolean = isInstaite()
-
-    //articlesDao.getAllArticles()
-
-    /*
-    val allArticles : LiveData<List<Articles>> =  liveData {
-        getArticles()
-    }
-    */
-
-    //getArticles()
-
-    //val allArtice =
-
-     val FRESH_TIMEOUT_IN_MINUTES = 2
-
-    //private val executor=  Executor()
+    //val mainHandler =Hanlder)
 
     suspend fun insert(articles: Articles){
         articlesDao.insertArticles(articles)
     }
 
+    fun  getArticles() : LiveData<List<Articles>> {
+        var sharedPreferences :SharedPreferencesHelper = SharedPreferencesHelper()
 
-     fun  getArticles() : LiveData<List<Articles>> {
+        sharedPreferences.saveSharedPrefs(context)
 
-        return refreshArticles()
+        return if (sharedPreferences.getSharedPrefs(context) != "sent" )
+        {
+            refreshArticles()
+        }
+        else{
+            articlesDao.getAllArticles()
 
-         //return  refreshArticles()
+        }
     }
 
 
@@ -95,33 +78,21 @@ class ArticleRepository( private val articlesDao: ArticlesDao, var context: Appl
                     currentArticles.addAll(response.body())
                     Toast.makeText(context, response.body()[1].toString(), Toast.LENGTH_LONG).show()
 
+                    coroutineScope.launch(Dispatchers.Main) {
+                        articlesDao.deleteAll()
+                    }
+
                     for (x in 0 until currentArticles.size) {
                         coroutineScope.launch(Dispatchers.Main) {
                             articlesDao.insertArticles(currentArticles[x])
                         }
                     }
 
-
-                    instantiate.instantiate = true
-
-                    coroutineScope.launch(Dispatchers.Main) {
-                        articlesDao.reInstatiate(instantiate)
-
-                       // isInitialize =  articlesDao.isInstatiate()
-                    }
-
-
                 }}
             override fun onFailure(call: Call<List<Articles>>?, t: Throwable?) {
-
             }
         })
-
-        }else
-         {
-             data = articlesDao.getAllArticles() as MutableLiveData<List<Articles>>
-         }
-
+        }
         return  data
     }
 

@@ -27,7 +27,7 @@ interface ArticlesDao {
     @Query("Select instantiated from instantiate ")
     suspend fun isInstatiate(): Boolean
 
-    @Query("DELETE FROM instantiate")
+    @Query("DELETE  FROM articles_table")
     suspend fun deleteAll()
 
 

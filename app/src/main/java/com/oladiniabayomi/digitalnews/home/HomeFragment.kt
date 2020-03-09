@@ -55,25 +55,18 @@ class HomeFragment : Fragment(), OnItemClickListener {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
-        //homeViewModel = ViewModelProviders.of(this).get(HomeViewModel::class.java)
-
         val root = inflater.inflate(R.layout.fragment_home, container, false)
-
         homeViewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
-
-
-        //Adapter initialization
+        // initialization
         mAdapter = CustomPagerAdapter2(activity!!.supportFragmentManager,fragments)
         mViewPager = root.findViewById(R.id.viewPager)
         mLinearLayout = root.findViewById(R.id.pagesContainer)
-
         //RecyclerView implementation
         recyclerView = root.findViewById(R.id.home_recyclerview)
         layoutManager = LinearLayoutManager(activity)
         articlesRecyclerViewAdapter =
             context?.let { ArticlesRecyclerViewAdapter(it, currentArticles, this) }
-
+        //setting Recycler Views attribute
         recyclerView.layoutManager = layoutManager
         recyclerView.adapter = articlesRecyclerViewAdapter
 
@@ -81,21 +74,13 @@ class HomeFragment : Fragment(), OnItemClickListener {
             fragments.add(FeaturedFragment().newInstance("https://i2.wp.com/www.tell.com.ng/wp-content/uploads/2020/02/images-1-1.jpeg?fit=610%2C503&ssl=1",
                 "Loading"))
         }
-
         homeViewModel.allArticles.observe(viewLifecycleOwner, Observer { articles ->
-
             articles.let { articlesRecyclerViewAdapter!!.setArticles(ArrayList(it))}
-
         })
-
-        //Call for the retrofit class
-        //getCurrentData()
-
         mViewPager!!.adapter= mAdapter
         mIndicator = MyPageIndicator(activity!!.applicationContext, mLinearLayout!!, mViewPager!! , R.drawable.tab_selector)
         mIndicator!!.setPageCount(fragments.size)
         mIndicator!!.show()
-
         return root
     }
 
@@ -104,49 +89,6 @@ class HomeFragment : Fragment(), OnItemClickListener {
         val intent = Intent(activity, DetailedArticleActivity::class.java)
         intent.putExtra("articles", articles)
         startActivity(intent)
-    }
-
-    private fun getCurrentData() {
-        val retrofit = Retrofit.Builder()
-            .baseUrl("http://www.tell.com.ng/")
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
-        val service = retrofit.create(PostsService::class.java)
-        val call = service.getPosts()
-        call.enqueue(object : Callback<List<Articles>> {
-            override fun onResponse(
-                call: Call<List<Articles>>?,
-                response: Response<List<Articles>>?
-            ) { if (response!!.code() == 200) {
-                 //   currentArticles.addAll(response.body())
-
-               //  homeViewModel.insert(currentArticles[1])
-                    //Adding Articles to database
-
-                Toast.makeText(context, response.body()[1].toString(), Toast.LENGTH_LONG).show()
-
-                    for (x in 0 until currentArticles.size) {
-                      //  homeViewModel.insert(currentArticles[x])
-
-                    }
-
-                    //Clearing Fragments From Database
-                   // fragments.clear()
-
-                    for ( x in 0..5 ){
-                      //  fragments.add(FeaturedFragment().newInstance(currentArticles[x].articlesThumbnailImage!!,
-                        //    currentArticles[x].articlesTitle!!.rendered!!))
-                    }
-
-              //      mAdapter!!.notifyDataSetChanged()
-                  //  articlesRecyclerViewAdapter!!.notifyDataSetChanged()
-            } }
-
-
-            override fun onFailure(call: Call<List<Articles>>?, t: Throwable?) {
-                //   textView!!.text = t!!.message
-            }
-        })
     }
 
 

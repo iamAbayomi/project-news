@@ -51,12 +51,8 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
      * viewModelScope which we can use here.
      */
     fun insert(articles: Articles) = viewModelScope.launch {
-
         repository.insert(articles)
     }
 
-    fun insertSaved(savedArticles: SavedArticles) = viewModelScope.launch {
-       // savedRepository.insertIntoSaved(savedArticles)
-    }
 
 }
