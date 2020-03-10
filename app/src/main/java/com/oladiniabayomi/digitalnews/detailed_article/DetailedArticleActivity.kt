@@ -33,11 +33,7 @@ class DetailedArticleActivity : AppCompatActivity() {
 
         var articles: Articles = intent.getSerializableExtra("articles") as Articles
 
-       var savedArticles : SavedArticles = intent.getSerializableExtra("articles") as SavedArticles
-
-
-       saved_icon = findViewById(R.id.saved_icon)
-
+      saved_icon = findViewById(R.id.saved_icon)
         text_title.text = articles.articlesTitle!!.rendered
         text_content.text = Jsoup.parse(articles.articlesFullText!!.rendered).text()
 
@@ -48,24 +44,25 @@ class DetailedArticleActivity : AppCompatActivity() {
        var unchecked: Drawable
 
 
+       var savedArticles : SavedArticles = convertoSavedArticles(articles)
+
+
+
        detailedViewModel.isArticlesPresent(articles.articlesTitle!!.rendered!!)
            .observe(this, Observer { it ->
                var  tk : Int  = it
-
                int = it.toString()
-
                unchecked = if (tk.toString().equals("0")) {
                    resources.getDrawable(R.drawable.ic_saved_plain)
                } else {
                    resources.getDrawable(R.drawable.ic_saved_colored)
-
                }
 
                Glide.with(this)
                    .load(unchecked)
                    .into(saved_icon)
 
-               Toast.makeText(this, tk.toString(), Toast.LENGTH_LONG ).show()
+               Toast.makeText(this, int.toString(), Toast.LENGTH_LONG ).show()
 
            })
 
@@ -76,7 +73,6 @@ class DetailedArticleActivity : AppCompatActivity() {
            } else {
                detailedViewModel.deleteArticles(savedArticles.articlesTitle!!.rendered!!)
            }
-
        }
 
    }
@@ -85,6 +81,19 @@ class DetailedArticleActivity : AppCompatActivity() {
 
     }
 
+    fun convertoSavedArticles(articles: Articles): SavedArticles{
+
+        var savedArticles = SavedArticles()
+
+        savedArticles.articlesId = articles.articlesId
+        savedArticles.articlesTitle = articles.articlesTitle
+        savedArticles.articlesFullText = articles.articlesFullText
+        savedArticles.articlesThumbnailImage = articles.articlesThumbnailImage
+        savedArticles.articlesTimeStamp = articles.articlesTimeStamp
+
+
+        return savedArticles
+    }
 }
 
 /*
