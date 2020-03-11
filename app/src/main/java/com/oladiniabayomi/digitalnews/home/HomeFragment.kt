@@ -18,6 +18,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.LayoutManager
 import androidx.viewpager.widget.ViewPager
+import com.faltenreich.skeletonlayout.Skeleton
+import com.faltenreich.skeletonlayout.applySkeleton
 import com.oladiniabayomi.digitalarticles.articles.Articles
 import com.oladiniabayomi.digitalnews.MyPageIndicator
 import com.oladiniabayomi.digitalnews.R
@@ -33,6 +35,7 @@ import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.lang.Exception
 
 class HomeFragment : Fragment(), OnItemClickListener {
 
@@ -50,6 +53,8 @@ class HomeFragment : Fragment(), OnItemClickListener {
     var mIndicator : MyPageIndicator? = null
     var fragments = ArrayList<Fragment>()
 
+    private lateinit var skeleton: Skeleton
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -64,6 +69,10 @@ class HomeFragment : Fragment(), OnItemClickListener {
         //RecyclerView implementation
         recyclerView = root.findViewById(R.id.home_recyclerview)
         layoutManager = LinearLayoutManager(activity)
+
+        // Either use an existing Skeletonlayout
+        skeleton = recyclerView.applySkeleton(R.layout.article_item_view,10)
+
         articlesRecyclerViewAdapter =
             context?.let { ArticlesRecyclerViewAdapter(it, currentArticles, this) }
 
@@ -78,9 +87,13 @@ class HomeFragment : Fragment(), OnItemClickListener {
 
         homeViewModel.allCategories.observe(  viewLifecycleOwner, Observer { articles->
 
-            fragments.clear()
+         //   fragments.clear()
             for (x in 0 until 5){
-                fragments.add(FeaturedFragment().newInstance(articles[x].articlesThumbnailImage!!,articles[x].articlesTitle!!.rendered!! ))
+               try { fragments.add(FeaturedFragment().newInstance(articles[x].articlesThumbnailImage!!,articles[x].articlesTitle!!.rendered!! ))
+               } catch (e:Exception){
+
+               }
+
             }
 
         })
@@ -88,11 +101,14 @@ class HomeFragment : Fragment(), OnItemClickListener {
 
         homeViewModel.allArticles.observe(viewLifecycleOwner, Observer { articles ->
             articles.let { articlesRecyclerViewAdapter!!.setArticles(ArrayList(it))}
+
         })
         mViewPager!!.adapter= mAdapter
         mIndicator = MyPageIndicator(activity!!.applicationContext, mLinearLayout!!, mViewPager!! , R.drawable.tab_selector)
         mIndicator!!.setPageCount(fragments.size)
         mIndicator!!.show()
+
+
         return root
     }
 
@@ -102,6 +118,9 @@ class HomeFragment : Fragment(), OnItemClickListener {
         intent.putExtra("articles", articles)
         startActivity(intent)
     }
+
+
+
 
 
      class CustomPagerAdapter2(fm: FragmentManager, frags: List<Fragment>) : FragmentStatePagerAdapter(fm) {

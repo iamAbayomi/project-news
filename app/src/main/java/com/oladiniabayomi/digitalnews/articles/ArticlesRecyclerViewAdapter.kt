@@ -8,6 +8,9 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.bumptech.glide.load.resource.bitmap.DownsampleStrategy
+import com.bumptech.glide.request.RequestOptions
 import com.oladiniabayomi.digitalarticles.articles.Articles
 import com.oladiniabayomi.digitalnews.R
 import com.oladiniabayomi.digitalnews.interfaces.OnItemClickListener
@@ -52,10 +55,14 @@ class ArticlesRecyclerViewHolder(itemView : View) : RecyclerView.ViewHolder(item
 
         Glide.with(context)
             .load(currentArticles.articlesThumbnailImage)
+            .apply(RequestOptions().override(85,85).downsample(DownsampleStrategy.CENTER_INSIDE).skipMemoryCache(true).diskCacheStrategy(
+                DiskCacheStrategy.NONE))
+
             .into(articleImage)
 
         articleTitle.text = currentArticles.articlesTitle!!.rendered
-        articleDate.text = currentArticles.articlesTimeStamp
+      //  articleDate.text = currentArticles.articlesTimeStamp
+        articleDate.text = "by John Smith"
 
         itemView.setOnClickListener{
             listener.onItemClick( currentArticles)
