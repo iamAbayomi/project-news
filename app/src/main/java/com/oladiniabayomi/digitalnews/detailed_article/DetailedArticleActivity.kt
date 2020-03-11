@@ -31,9 +31,13 @@ class DetailedArticleActivity : AppCompatActivity() {
 
         detailedViewModel = ViewModelProvider(this).get(DetailedViewModel::class.java)
 
+       var post = intent.getStringExtra("post")
+
         var articles: Articles = intent.getSerializableExtra("articles") as Articles
 
-      saved_icon = findViewById(R.id.saved_icon)
+       //if ( post == "article" )
+
+       saved_icon = findViewById(R.id.saved_icon)
         text_title.text = articles.articlesTitle!!.rendered
         text_content.text = Jsoup.parse(articles.articlesFullText!!.rendered).text()
 
@@ -94,6 +98,8 @@ class DetailedArticleActivity : AppCompatActivity() {
 
         return savedArticles
     }
+
+
 }
 
 /*

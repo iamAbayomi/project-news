@@ -66,6 +66,7 @@ class HomeFragment : Fragment(), OnItemClickListener {
         layoutManager = LinearLayoutManager(activity)
         articlesRecyclerViewAdapter =
             context?.let { ArticlesRecyclerViewAdapter(it, currentArticles, this) }
+
         //setting Recycler Views attribute
         recyclerView.layoutManager = layoutManager
         recyclerView.adapter = articlesRecyclerViewAdapter
@@ -74,6 +75,7 @@ class HomeFragment : Fragment(), OnItemClickListener {
             fragments.add(FeaturedFragment().newInstance("https://i2.wp.com/www.tell.com.ng/wp-content/uploads/2020/02/images-1-1.jpeg?fit=610%2C503&ssl=1",
                 "Loading"))
         }
+
         homeViewModel.allArticles.observe(viewLifecycleOwner, Observer { articles ->
             articles.let { articlesRecyclerViewAdapter!!.setArticles(ArrayList(it))}
         })

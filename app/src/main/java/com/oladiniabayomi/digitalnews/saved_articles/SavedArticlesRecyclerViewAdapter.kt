@@ -51,14 +51,13 @@ class SavedRecyclerViewHolder(itemView : View) : RecyclerView.ViewHolder(itemVie
 
     fun bindTo(currentArticles:SavedArticles, context: Context, listener: SavedOnItemClickListener) {
         //   articleImage.setImageResource()
-
         Glide.with(context)
             .load(currentArticles.articlesThumbnailImage)
             .into(articleImage)
 
         articleTitle.text = currentArticles.articlesTitle!!.rendered
         articleDate.text = currentArticles.articlesTimeStamp
-
+        //Setting OnClickListener
         itemView.setOnClickListener{
             listener.onItemClick( currentArticles)
         }
