@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import com.bumptech.glide.Glide
+import com.oladiniabayomi.digitalarticles.articles.Articles
 
 import com.oladiniabayomi.digitalnews.R
 import kotlinx.android.synthetic.main.activity_detailed_article.*
@@ -27,9 +28,10 @@ class FeaturedFragment : Fragment() {
 
 
 
-    fun newInstance( imageUrl : String, title: String ) :FeaturedFragment {
+    fun newInstance( articles: Articles ) :FeaturedFragment {
         val fragment = FeaturedFragment ()
         val args = Bundle()
+      //  var imageUrl : String = arti
         args.putString(arg, imageUrl)
         args.putString(args2, title)
         fragment.arguments = args

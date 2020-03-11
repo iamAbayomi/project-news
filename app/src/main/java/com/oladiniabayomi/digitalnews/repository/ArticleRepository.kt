@@ -31,6 +31,8 @@ class ArticleRepository( private val articlesDao: ArticlesDao, var context: Appl
     private val coroutineScope = CoroutineScope(Dispatchers.Main + parentJob)
     var currentArticles = ArrayList<Articles>()
 
+    var allCategories : LiveData<List<Articles>> = articlesDao.getCategories()
+
     val allArticles : LiveData<List<Articles>> = getArticles()
     var isInitialize : Boolean = false
     val FRESH_TIMEOUT_IN_MINUTES = 2

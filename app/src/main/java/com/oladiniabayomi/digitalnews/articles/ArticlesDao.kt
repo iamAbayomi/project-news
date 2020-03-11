@@ -17,6 +17,10 @@ interface ArticlesDao {
     @Query("SELECT * FROM articles_table")
     fun getAllArticles() : LiveData<List<Articles>>
 
+
+  @Query("SELECT * FROM articles_table ORDER BY RANDOM() LIMIT 5")
+    fun getCategories() : LiveData<List<Articles>>
+
     @Query("DELETE  FROM articles_table")
     suspend fun deleteAll()
 
