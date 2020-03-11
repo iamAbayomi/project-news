@@ -14,49 +14,53 @@ import com.oladiniabayomi.digitalnews.interfaces.OnItemClickListener
 
 public class ArticlesRecyclerViewAdapter(var context: Context, var currentArticles: ArrayList<Articles>?, val listener: OnItemClickListener ) : RecyclerView.Adapter<ArticlesRecyclerViewHolder>() {
 
-        private val mInflater: LayoutInflater = LayoutInflater.from(context)
+    private val mInflater: LayoutInflater = LayoutInflater.from(context)
+
+
+    internal fun setArticles(currentArticles: ArrayList<Articles>?){
+        this.currentArticles = currentArticles
+         notifyDataSetChanged()
+    }
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ArticlesRecyclerViewHolder {
+        val mItemView : View = mInflater.inflate(R.layout.article_item_view, parent, false)
+        return  ArticlesRecyclerViewHolder(mItemView)
+
+    }
+
+    override fun getItemCount(): Int {
+        return currentArticles!!.size
+    }
+
+    override fun onBindViewHolder(holder: ArticlesRecyclerViewHolder, position: Int) {
+        var currentArticles : Articles = currentArticles!![position]
+        holder.bindTo(currentArticles, context, listener)
+    }
+}
+
+
+class ArticlesRecyclerViewHolder(itemView : View) : RecyclerView.ViewHolder(itemView) {
+
+    val articleImage : ImageView =  itemView.findViewById(R.id.article_image)
+    val articleTitle : TextView = itemView.findViewById(R.id.article_title)
+    val articleDate : TextView = itemView.findViewById(R.id.article_date)
 
 
 
-        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ArticlesRecyclerViewHolder {
-            val mItemView : View = mInflater.inflate(R.layout.article_item_view, parent, false)
-            return  ArticlesRecyclerViewHolder(mItemView)
+    fun bindTo(currentArticles: Articles, context: Context, listener: OnItemClickListener) {
+     //   articleImage.setImageResource()
 
-        }
+        Glide.with(context)
+            .load(currentArticles.articlesThumbnailImage)
+            .into(articleImage)
 
-        override fun getItemCount(): Int {
-            return currentArticles!!.size
-        }
+        articleTitle.text = currentArticles.articlesTitle!!.rendered
+        articleDate.text = currentArticles.articlesTimeStamp
 
-        override fun onBindViewHolder(holder: ArticlesRecyclerViewHolder, position: Int) {
-            var currentArticles : Articles = currentArticles!![position]
-            holder.bindTo(currentArticles, context, listener)
+        itemView.setOnClickListener{
+            listener.onItemClick( currentArticles)
         }
     }
 
 
-    class ArticlesRecyclerViewHolder(itemView : View) : RecyclerView.ViewHolder(itemView) {
-
-        val articleImage : ImageView =  itemView.findViewById(R.id.article_image)
-        val articleTitle : TextView = itemView.findViewById(R.id.article_title)
-        val articleDate : TextView = itemView.findViewById(R.id.article_date)
-
-
-
-        fun bindTo(currentArticles: Articles, context: Context, listener: OnItemClickListener) {
-         //   articleImage.setImageResource()
-
-            Glide.with(context)
-                .load(currentArticles.articlesThumbnailImage)
-                .into(articleImage)
-
-            articleTitle.text = currentArticles.articlesTitle!!.rendered
-            articleDate.text = currentArticles.articlesTimeStamp
-
-            itemView.setOnClickListener{
-                listener.onItemClick( currentArticles)
-            }
-        }
-
-
-    }
+}

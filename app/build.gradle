@@ -32,6 +32,9 @@ repositories {
     mavenCentral()
 }
 dependencies {
+
+
+
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation 'androidx.appcompat:appcompat:1.0.2'
@@ -40,6 +43,7 @@ dependencies {
     implementation 'com.google.android.material:material:1.0.0'
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
     implementation 'androidx.navigation:navigation-fragment:2.0.0'
+
     implementation 'androidx.navigation:navigation-ui:2.0.0'
     implementation 'androidx.lifecycle:lifecycle-extensions:2.0.0'
     implementation 'androidx.navigation:navigation-fragment-ktx:2.0.0'
@@ -62,6 +66,23 @@ dependencies {
     // Coroutines
     api "org.jetbrains.kotlinx:kotlinx-coroutines-android:$rootProject.coroutines"
 
+
+    // Kotlin standard library
+
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$rootProject.$kotlin_version"
+
+    // Coroutines
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$rootProject.$coroutines_android_version"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$rootProject.$coroutines_android_version"
+
+
+    //LiveData
+    implementation "androidx.lifecycle:lifecycle-livedata-ktx:2.2.0-alpha01"
+
+    implementation "androidx.lifecycle:lifecycle-runtime-ktx:2.2.0-alpha01"
+
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.0.1'
+
     // UI
     implementation "com.google.android.material:material:$rootProject.materialVersion"
 
@@ -70,6 +91,7 @@ dependencies {
     implementation 'com.squareup.retrofit2:converter-gson:2.0.0'
     implementation 'org.jsoup:jsoup:1.13.1'
 
+    implementation "androidx.work:work-runtime-ktx:$rootProject.versionswork"
 
     // Testing
     androidTestImplementation "androidx.arch.core:core-testing:$rootProject.coreTestingVersion"
