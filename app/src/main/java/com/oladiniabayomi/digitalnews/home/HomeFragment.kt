@@ -76,6 +76,16 @@ class HomeFragment : Fragment(), OnItemClickListener {
                 "Loading"))
         }
 
+        homeViewModel.allCategories.observe(  viewLifecycleOwner, Observer { articles->
+
+            fragments.clear()
+            for (x in 0 until 5){
+                fragments.add(FeaturedFragment().newInstance(articles[x].articlesThumbnailImage!!,articles[x].articlesTitle!!.rendered!! ))
+            }
+
+        })
+
+
         homeViewModel.allArticles.observe(viewLifecycleOwner, Observer { articles ->
             articles.let { articlesRecyclerViewAdapter!!.setArticles(ArrayList(it))}
         })
