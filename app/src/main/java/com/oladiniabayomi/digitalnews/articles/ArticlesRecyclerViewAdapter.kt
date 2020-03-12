@@ -12,6 +12,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.resource.bitmap.DownsampleStrategy
 import com.bumptech.glide.request.RequestOptions
 import com.oladiniabayomi.digitalarticles.articles.Articles
+import com.oladiniabayomi.digitalnews.ProportionalImageView
 import com.oladiniabayomi.digitalnews.R
 import com.oladiniabayomi.digitalnews.interfaces.OnItemClickListener
 
@@ -44,7 +45,7 @@ public class ArticlesRecyclerViewAdapter(var context: Context, var currentArticl
 
 class ArticlesRecyclerViewHolder(itemView : View) : RecyclerView.ViewHolder(itemView) {
 
-    val articleImage : ImageView =  itemView.findViewById(R.id.article_image)
+    val articleImage : ProportionalImageView =  itemView.findViewById(R.id.article_image)
     val articleTitle : TextView = itemView.findViewById(R.id.article_title)
     val articleDate : TextView = itemView.findViewById(R.id.article_date)
 
