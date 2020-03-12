@@ -9,11 +9,10 @@
 
     <!-- TODO: Update blank fragment layout -->
 
-    <com.oladiniabayomi.digitalnews.ProportionalImageView
+    <ImageView
         android:id="@+id/featured_image"
-        android:layout_width="0dp"
-        android:layout_height="250dp"
-        android:adjustViewBounds="true"
+        android:layout_width="414dp"
+        android:layout_height="281dp"
         android:scaleType="fitXY"
         android:src="@drawable/appbarimage"
         app:layout_constraintEnd_toEndOf="parent"

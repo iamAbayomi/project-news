@@ -10,6 +10,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import com.bumptech.glide.Glide
 import com.oladiniabayomi.digitalarticles.articles.Articles
+import com.oladiniabayomi.digitalnews.ProportionalImageView
 
 import com.oladiniabayomi.digitalnews.R
 import kotlinx.android.synthetic.main.activity_detailed_article.*
@@ -54,7 +55,7 @@ class FeaturedFragment : Fragment() {
         var view  = inflater.inflate(R.layout.fragment_featured, container, false)
 
         var featuredText = view.findViewById<TextView>(R.id.featured_text)
-        var featuredImage = view.findViewById<ImageView>(R.id.featured_image)
+        var featuredImage = view.findViewById<ProportionalImageView>(R.id.featured_image)
 
         featuredText.text = param2
 

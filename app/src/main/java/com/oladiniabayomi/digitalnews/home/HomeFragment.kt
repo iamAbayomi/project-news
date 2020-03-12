@@ -85,6 +85,8 @@ class HomeFragment : Fragment(), OnItemClickListener {
                 "Loading"))
         }
 
+        //skeleton.showSkeleton()
+
         homeViewModel.allCategories.observe(  viewLifecycleOwner, Observer { articles->
 
          //   fragments.clear()

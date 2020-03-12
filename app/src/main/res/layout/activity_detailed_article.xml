@@ -16,10 +16,12 @@
             android:layout_height="match_parent">
 
 
-    <ImageView
+    <com.oladiniabayomi.digitalnews.ProportionalImageView
         android:id="@+id/text_imageView"
-        android:layout_width="420dp"
-        android:layout_height="414dp"
+        android:layout_width="match_parent"
+        android:layout_height="400dp"
+        android:scaleType="fitXY"
+        android:adjustViewBounds="true"
         android:src="@drawable/appbarimage"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
