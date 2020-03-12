@@ -64,6 +64,7 @@ class ArticlesRecyclerViewHolder(itemView : View) : RecyclerView.ViewHolder(item
       //  articleDate.text = currentArticles.articlesTimeStamp
         articleDate.text = "by John Smith"
 
+
         itemView.setOnClickListener{
             listener.onItemClick( currentArticles)
         }
