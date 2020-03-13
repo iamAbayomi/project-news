@@ -1,6 +1,9 @@
 package com.oladiniabayomi.digitalnews.home
 
+import android.content.Context
 import android.content.Intent
+import android.net.ConnectivityManager
+import android.net.NetworkInfo
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -61,18 +64,42 @@ class HomeFragment : Fragment(), OnItemClickListener {
 
         initialization(root)
 
-        for ( x in 0..5 ){
+        /*for ( x in 0..5 ){
             fragments.add(FeaturedFragment().newInstance("https://i2.wp.com/www.tell.com.ng/wp-content/uploads/2020/02/images-1-1.jpeg?fit=610%2C503&ssl=1",
                 "Loading"))
+        }*/
+
+        addFragments()
+
+        val cm = context!!.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val activeNetwork: NetworkInfo? = cm.activeNetworkInfo
+        val isConnected: Boolean = activeNetwork?.isConnectedOrConnecting == true
+
+        if(isConnected){
+
+        }else{
+            Toast.makeText(context, "No Internet, Please check your Internet Connection" , Toast.LENGTH_LONG)
+                .show()
         }
 
         //skeleton.showSkeleton()
         homeViewModel.allCategories.observe(  viewLifecycleOwner, Observer { articles->
-           fragments.clear()
-            for (x in 0 until 5){
-               try { fragments.add(FeaturedFragment().newInstance(articles[x].articlesThumbnailImage!!,articles[x].articlesTitle!!.rendered!! ))
-               } catch (e:Exception){
-               } } })
+            /*Toast.makeText(context, articles[1].articlesFullText!!.rendered , Toast.LENGTH_LONG)
+                .show()*/
+            if(articles != null) {
+                for (x in 0 until 5) {
+                    fragments.clear()
+
+                    try {
+                        fragments.add(FeaturedFragment().newInstance(articles[x].articlesThumbnailImage!!,
+                            articles[x].articlesTitle!!.rendered!!))
+                    } catch (e: Exception) {
+                    } }
+            }else{
+                mLinearLayout!!.visibility = View.INVISIBLE
+
+            }
+        })
 
         homeViewModel.allArticles.observe(viewLifecycleOwner, Observer { articles ->
             articles.let { articlesRecyclerViewAdapter!!.setArticles(ArrayList(it))} })
@@ -117,6 +144,21 @@ class HomeFragment : Fragment(), OnItemClickListener {
     fun addCategories(){
 
     }
+
+
+     fun addFragments(){
+
+         fragments.add(FeaturedFragment().newInstance("https://i2.wp.com/www.tell.com.ng/wp-content/uploads/2020/02/images-1-1.jpeg?fit=610%2C503&ssl=1",
+             "Loading"))
+         fragments.add(FeaturedFragment().newInstance("https://i2.wp.com/www.tell.com.ng/wp-content/uploads/2020/02/images-1-1.jpeg?fit=610%2C503&ssl=1",
+             "Loading"))
+        fragments.add(FeaturedFragment().newInstance("https://i2.wp.com/www.tell.com.ng/wp-content/uploads/2020/02/images-1-1.jpeg?fit=610%2C503&ssl=1",
+             "Loading"))
+        fragments.add(FeaturedFragment().newInstance("https://i2.wp.com/www.tell.com.ng/wp-content/uploads/2020/02/images-1-1.jpeg?fit=610%2C503&ssl=1",
+             "Loading"))
+        fragments.add(FeaturedFragment().newInstance("https://i2.wp.com/www.tell.com.ng/wp-content/uploads/2020/02/images-1-1.jpeg?fit=610%2C503&ssl=1",
+             "Loading"))
+        }
 
 
 
