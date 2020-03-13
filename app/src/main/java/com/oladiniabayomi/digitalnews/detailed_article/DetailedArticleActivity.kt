@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.ImageView
 import android.widget.Toast
+import androidx.core.text.HtmlCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
@@ -38,8 +39,9 @@ class DetailedArticleActivity : AppCompatActivity() {
        //if ( post == "article" )
 
        saved_icon = findViewById(R.id.saved_icon)
-        text_title.text = articles.articlesTitle!!.rendered
-        text_content.text = Jsoup.parse(articles.articlesFullText!!.rendered).text()
+       //Set html to string in android
+        text_title.text = HtmlCompat.fromHtml(articles.articlesTitle!!.rendered.toString(),0)
+        text_content.text = HtmlCompat.fromHtml((articles.articlesFullText!!.rendered.toString()), 0)
 
         Glide.with(this)
             .load(articles.articlesThumbnailImage)

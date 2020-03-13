@@ -9,8 +9,8 @@
 
     <androidx.cardview.widget.CardView
         android:id="@+id/article_card"
-        android:layout_width="95dp"
-        android:layout_height="95dp"
+        android:layout_width="105dp"
+        android:layout_height="105dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:layout_marginBottom="8dp"
@@ -30,8 +30,9 @@
                 android:id="@+id/article_image"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:scaleType="fitXY"
                 android:adjustViewBounds="true"
-                android:scaleType="fitXY" />
+               />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -44,7 +45,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="24dp"
         android:layout_marginEnd="15dp"
-        android:fontFamily="sans-serif-thin"
+        android:fontFamily="@font/open_sans"
         android:text="Regfrigerated treats can make for a cool event"
         android:textColor="#DF0A0909"
         android:textSize="18sp"
@@ -60,6 +61,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
+        android:fontFamily="@font/open_sans"
         android:text="4:00PM"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.121"

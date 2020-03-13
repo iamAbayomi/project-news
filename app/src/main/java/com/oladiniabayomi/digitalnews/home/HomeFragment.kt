@@ -55,30 +55,11 @@ class HomeFragment : Fragment(), OnItemClickListener {
 
     private lateinit var skeleton: Skeleton
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+
         val root = inflater.inflate(R.layout.fragment_home, container, false)
-        homeViewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
-        // initialization
-        mAdapter = CustomPagerAdapter2(activity!!.supportFragmentManager,fragments)
-        mViewPager = root.findViewById(R.id.viewPager)
-        mLinearLayout = root.findViewById(R.id.pagesContainer)
-        //RecyclerView implementation
-        recyclerView = root.findViewById(R.id.home_recyclerview)
-        layoutManager = LinearLayoutManager(activity)
 
-        // Either use an existing Skeletonlayout
-        skeleton = recyclerView.applySkeleton(R.layout.article_item_view,10)
-
-        articlesRecyclerViewAdapter =
-            context?.let { ArticlesRecyclerViewAdapter(it, currentArticles, this) }
-
-        //setting Recycler Views attribute
-        recyclerView.layoutManager = layoutManager
-        recyclerView.adapter = articlesRecyclerViewAdapter
+        initialization(root)
 
         for ( x in 0..5 ){
             fragments.add(FeaturedFragment().newInstance("https://i2.wp.com/www.tell.com.ng/wp-content/uploads/2020/02/images-1-1.jpeg?fit=610%2C503&ssl=1",
@@ -86,26 +67,17 @@ class HomeFragment : Fragment(), OnItemClickListener {
         }
 
         //skeleton.showSkeleton()
-
         homeViewModel.allCategories.observe(  viewLifecycleOwner, Observer { articles->
-
-         //   fragments.clear()
+           fragments.clear()
             for (x in 0 until 5){
                try { fragments.add(FeaturedFragment().newInstance(articles[x].articlesThumbnailImage!!,articles[x].articlesTitle!!.rendered!! ))
                } catch (e:Exception){
-
-               }
-
-            }
-
-        })
-
+               } } })
 
         homeViewModel.allArticles.observe(viewLifecycleOwner, Observer { articles ->
-            articles.let { articlesRecyclerViewAdapter!!.setArticles(ArrayList(it))}
-
-        })
+            articles.let { articlesRecyclerViewAdapter!!.setArticles(ArrayList(it))} })
         mViewPager!!.adapter= mAdapter
+
         mIndicator = MyPageIndicator(activity!!.applicationContext, mLinearLayout!!, mViewPager!! , R.drawable.tab_selector)
         mIndicator!!.setPageCount(fragments.size)
         mIndicator!!.show()
@@ -122,6 +94,29 @@ class HomeFragment : Fragment(), OnItemClickListener {
     }
 
 
+    fun initialization(root: View){
+        homeViewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
+        // initialization
+        mAdapter = CustomPagerAdapter2(activity!!.supportFragmentManager,fragments)
+        mViewPager = root.findViewById(R.id.viewPager)
+        mLinearLayout = root.findViewById(R.id.pagesContainer)
+        recyclerView = root.findViewById(R.id.home_recyclerview)
+
+        // Either use an existing Skeletonlayout
+        skeleton = recyclerView.applySkeleton(R.layout.article_item_view,10)
+        articlesRecyclerViewAdapter =
+            context?.let { ArticlesRecyclerViewAdapter(it, currentArticles, this) }
+
+        //setting Recycler Views attribute
+        recyclerView.layoutManager =  LinearLayoutManager(activity)
+        recyclerView.adapter = articlesRecyclerViewAdapter
+
+    }
+
+
+    fun addCategories(){
+
+    }
 
 
 

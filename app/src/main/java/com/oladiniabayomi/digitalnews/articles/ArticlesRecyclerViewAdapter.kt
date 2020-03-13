@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.text.HtmlCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
@@ -61,7 +62,7 @@ class ArticlesRecyclerViewHolder(itemView : View) : RecyclerView.ViewHolder(item
 
             .into(articleImage)
 
-        articleTitle.text = currentArticles.articlesTitle!!.rendered
+        articleTitle.text = HtmlCompat.fromHtml(currentArticles.articlesTitle!!.rendered.toString(), 0)
       //  articleDate.text = currentArticles.articlesTimeStamp
         articleDate.text = "by John Smith"
 
