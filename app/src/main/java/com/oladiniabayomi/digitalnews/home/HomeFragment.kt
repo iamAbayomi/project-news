@@ -68,6 +68,16 @@ class HomeFragment : Fragment(), OnItemClickListener {
             fragments.add(FeaturedFragment().newInstance("https://i2.wp.com/www.tell.com.ng/wp-content/uploads/2020/02/images-1-1.jpeg?fit=610%2C503&ssl=1",
                 "Loading"))
         }*/
+        fragments.add(FeaturedFragment().newInstance("https://i2.wp.com/www.tell.com.ng/wp-content/uploads/2020/02/images-1-1.jpeg?fit=610%2C503&ssl=1",
+            "Loading"))
+        fragments.add(FeaturedFragment().newInstance("https://i2.wp.com/www.tell.com.ng/wp-content/uploads/2020/02/images-1-1.jpeg?fit=610%2C503&ssl=1",
+            "Loading"))
+        fragments.add(FeaturedFragment().newInstance("https://i2.wp.com/www.tell.com.ng/wp-content/uploads/2020/02/images-1-1.jpeg?fit=610%2C503&ssl=1",
+            "Loading"))
+        fragments.add(FeaturedFragment().newInstance("https://i2.wp.com/www.tell.com.ng/wp-content/uploads/2020/02/images-1-1.jpeg?fit=610%2C503&ssl=1",
+            "Loading"))
+        fragments.add(FeaturedFragment().newInstance("https://i2.wp.com/www.tell.com.ng/wp-content/uploads/2020/02/images-1-1.jpeg?fit=610%2C503&ssl=1",
+            "Loading"))
 
         addFragments()
 
@@ -148,16 +158,6 @@ class HomeFragment : Fragment(), OnItemClickListener {
 
      fun addFragments(){
 
-         fragments.add(FeaturedFragment().newInstance("https://i2.wp.com/www.tell.com.ng/wp-content/uploads/2020/02/images-1-1.jpeg?fit=610%2C503&ssl=1",
-             "Loading"))
-         fragments.add(FeaturedFragment().newInstance("https://i2.wp.com/www.tell.com.ng/wp-content/uploads/2020/02/images-1-1.jpeg?fit=610%2C503&ssl=1",
-             "Loading"))
-        fragments.add(FeaturedFragment().newInstance("https://i2.wp.com/www.tell.com.ng/wp-content/uploads/2020/02/images-1-1.jpeg?fit=610%2C503&ssl=1",
-             "Loading"))
-        fragments.add(FeaturedFragment().newInstance("https://i2.wp.com/www.tell.com.ng/wp-content/uploads/2020/02/images-1-1.jpeg?fit=610%2C503&ssl=1",
-             "Loading"))
-        fragments.add(FeaturedFragment().newInstance("https://i2.wp.com/www.tell.com.ng/wp-content/uploads/2020/02/images-1-1.jpeg?fit=610%2C503&ssl=1",
-             "Loading"))
         }
 
 
