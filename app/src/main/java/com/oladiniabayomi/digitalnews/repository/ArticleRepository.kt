@@ -90,7 +90,12 @@ class ArticleRepository( private val articlesDao: ArticlesDao, var context: Appl
          var time = 2
 
          coroutineScope.launch {
-            time = articlesDao.lastTime()
+
+             if(articlesDao.lastTime() != null){
+                 time = articlesDao.lastTime()
+             }else{
+                 time = 0
+             }
          }.invokeOnCompletion {
 
 

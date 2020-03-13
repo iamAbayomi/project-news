@@ -122,9 +122,16 @@ class HomeFragment : Fragment(), OnItemClickListener {
 
      class CustomPagerAdapter2(fm: FragmentManager, frags: List<Fragment>) : FragmentStatePagerAdapter(fm) {
         var mFrags : List<Fragment> = frags
+        var index: Int = 0
 
          override fun getItem(position: Int): Fragment {
-           var index: Int = position % mFrags.size
+
+          try{
+              index = position % mFrags.size
+          }catch (e : Exception){
+
+          }
+
              return mFrags.get(index)
          }
 
