@@ -62,24 +62,28 @@ class HomeFragment : Fragment(), OnItemClickListener {
 
         val root = inflater.inflate(R.layout.fragment_home, container, false)
 
-        initialization(root)
-
         /*for ( x in 0..5 ){
             fragments.add(FeaturedFragment().newInstance("https://i2.wp.com/www.tell.com.ng/wp-content/uploads/2020/02/images-1-1.jpeg?fit=610%2C503&ssl=1",
                 "Loading"))
         }*/
-        fragments.add(FeaturedFragment().newInstance("https://i2.wp.com/www.tell.com.ng/wp-content/uploads/2020/02/images-1-1.jpeg?fit=610%2C503&ssl=1",
-            "Loading"))
-        fragments.add(FeaturedFragment().newInstance("https://i2.wp.com/www.tell.com.ng/wp-content/uploads/2020/02/images-1-1.jpeg?fit=610%2C503&ssl=1",
-            "Loading"))
-        fragments.add(FeaturedFragment().newInstance("https://i2.wp.com/www.tell.com.ng/wp-content/uploads/2020/02/images-1-1.jpeg?fit=610%2C503&ssl=1",
-            "Loading"))
-        fragments.add(FeaturedFragment().newInstance("https://i2.wp.com/www.tell.com.ng/wp-content/uploads/2020/02/images-1-1.jpeg?fit=610%2C503&ssl=1",
-            "Loading"))
-        fragments.add(FeaturedFragment().newInstance("https://i2.wp.com/www.tell.com.ng/wp-content/uploads/2020/02/images-1-1.jpeg?fit=610%2C503&ssl=1",
+        fragments.add(FeaturedFragment().newInstance(R.drawable.loading.toString(),
             "Loading"))
 
-        addFragments()
+        fragments.add(FeaturedFragment().newInstance(R.drawable.loading.toString(),
+                "Loading"))
+
+        fragments.add(FeaturedFragment().newInstance(R.drawable.loading.toString(),
+                "Loading"))
+
+        fragments.add(FeaturedFragment().newInstance(R.drawable.loading.toString(),
+                "Loading"))
+
+        fragments.add(FeaturedFragment().newInstance(R.drawable.loading.toString(),
+                "Loading"))
+      //  mAdapter!!.notifyDataSetChanged()
+
+        initialization(root)
+
 
         val cm = context!!.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         val activeNetwork: NetworkInfo? = cm.activeNetworkInfo
@@ -97,8 +101,9 @@ class HomeFragment : Fragment(), OnItemClickListener {
             /*Toast.makeText(context, articles[1].articlesFullText!!.rendered , Toast.LENGTH_LONG)
                 .show()*/
             if(articles != null) {
+                fragments.clear()
+
                 for (x in 0 until 5) {
-                    fragments.clear()
 
                     try {
                         fragments.add(FeaturedFragment().newInstance(articles[x].articlesThumbnailImage!!,
@@ -109,6 +114,8 @@ class HomeFragment : Fragment(), OnItemClickListener {
                 mLinearLayout!!.visibility = View.INVISIBLE
 
             }
+            mAdapter!!.notifyDataSetChanged()
+
         })
 
         homeViewModel.allArticles.observe(viewLifecycleOwner, Observer { articles ->

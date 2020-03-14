@@ -30,15 +30,11 @@ class ArticleRepository( private val articlesDao: ArticlesDao, var context: Appl
     private val parentJob = Job()
     private val coroutineScope = CoroutineScope(Dispatchers.Main + parentJob)
     var currentArticles = ArrayList<Articles>()
-
     var allCategories : LiveData<List<Articles>> = articlesDao.getCategories()
-
     val allArticles : LiveData<List<Articles>> = getArticles()
     var isInitialize : Boolean = false
     val FRESH_TIMEOUT_IN_MINUTES = 2
-
     var currentTime = getTime()
-
     //val mainHandler =Hanlder)
 
     suspend fun insert(articles: Articles){
@@ -47,7 +43,6 @@ class ArticleRepository( private val articlesDao: ArticlesDao, var context: Appl
 
     fun  getArticles() : LiveData<List<Articles>> {
         var sharedPreferences :SharedPreferencesHelper = SharedPreferencesHelper()
-
         return if (sharedPreferences.getSharedPrefs(context) != "sent" )
         {
             Toast.makeText(context, "I am here", Toast.LENGTH_LONG).show()
@@ -60,17 +55,14 @@ class ArticleRepository( private val articlesDao: ArticlesDao, var context: Appl
             coroutineScope.launch(Dispatchers.Main) {
                 articlesDao.instatiate(instantiate)
             }
-
             refreshArticles()
         }
         else{
-
             refreshArticles()
-
           return  articlesDao.getAllArticles()
-
         }
     }
+
      //Call for Retrofit
      fun refreshArticles() : LiveData<List<Articles>> {
         val retrofit = Retrofit.Builder()
@@ -97,7 +89,6 @@ class ArticleRepository( private val articlesDao: ArticlesDao, var context: Appl
                  time = 0
              }
          }.invokeOnCompletion {
-
 
              if (abs((currentDate - time)) > FRESH_TIMEOUT_IN_MINUTES) {
                  Toast.makeText(context, abs((time)).toString(), Toast.LENGTH_LONG)
