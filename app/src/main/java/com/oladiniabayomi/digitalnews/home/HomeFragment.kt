@@ -66,35 +66,34 @@ class HomeFragment : Fragment(), OnItemClickListener {
             fragments.add(FeaturedFragment().newInstance("https://i2.wp.com/www.tell.com.ng/wp-content/uploads/2020/02/images-1-1.jpeg?fit=610%2C503&ssl=1",
                 "Loading"))
         }*/
+        initialization(root)
+
+        homeViewModel.allArticles.observe(viewLifecycleOwner, Observer { articles ->
+            articles.let { articlesRecyclerViewAdapter!!.setArticles(ArrayList(it))} })
+        mViewPager!!.adapter= mAdapter
+
+        mIndicator = MyPageIndicator(activity!!.applicationContext, mLinearLayout!!, mViewPager!! , R.drawable.tab_selector)
+        mIndicator!!.setPageCount(fragments.size)
+
         fragments.add(FeaturedFragment().newInstance(R.drawable.loading.toString(),
             "Loading"))
-
+        fragments.add(FeaturedFragment().newInstance(R.drawable.loading.toString(),
+                "Loading"))
+        fragments.add(FeaturedFragment().newInstance(R.drawable.loading.toString(),
+                "Loading"))
+        fragments.add(FeaturedFragment().newInstance(R.drawable.loading.toString(),
+                "Loading"))
         fragments.add(FeaturedFragment().newInstance(R.drawable.loading.toString(),
                 "Loading"))
 
-        fragments.add(FeaturedFragment().newInstance(R.drawable.loading.toString(),
-                "Loading"))
+        mAdapter!!.notifyDataSetChanged()
 
-        fragments.add(FeaturedFragment().newInstance(R.drawable.loading.toString(),
-                "Loading"))
-
-        fragments.add(FeaturedFragment().newInstance(R.drawable.loading.toString(),
-                "Loading"))
-      //  mAdapter!!.notifyDataSetChanged()
-
-        initialization(root)
 
 
         val cm = context!!.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         val activeNetwork: NetworkInfo? = cm.activeNetworkInfo
         val isConnected: Boolean = activeNetwork?.isConnectedOrConnecting == true
 
-        if(isConnected){
-
-        }else{
-            Toast.makeText(context, "No Internet, Please check your Internet Connection" , Toast.LENGTH_LONG)
-                .show()
-        }
 
         //skeleton.showSkeleton()
         homeViewModel.allCategories.observe(  viewLifecycleOwner, Observer { articles->
@@ -118,13 +117,14 @@ class HomeFragment : Fragment(), OnItemClickListener {
 
         })
 
-        homeViewModel.allArticles.observe(viewLifecycleOwner, Observer { articles ->
-            articles.let { articlesRecyclerViewAdapter!!.setArticles(ArrayList(it))} })
-        mViewPager!!.adapter= mAdapter
 
-        mIndicator = MyPageIndicator(activity!!.applicationContext, mLinearLayout!!, mViewPager!! , R.drawable.tab_selector)
-        mIndicator!!.setPageCount(fragments.size)
-        mIndicator!!.show()
+        if(isConnected){
+            mIndicator!!.show()
+
+        }else{
+            Toast.makeText(context, "No Internet, Please check your Internet Connection" , Toast.LENGTH_LONG)
+                .show()
+        }
 
 
         return root
@@ -148,6 +148,7 @@ class HomeFragment : Fragment(), OnItemClickListener {
 
         // Either use an existing Skeletonlayout
         skeleton = recyclerView.applySkeleton(R.layout.article_item_view,10)
+
         articlesRecyclerViewAdapter =
             context?.let { ArticlesRecyclerViewAdapter(it, currentArticles, this) }
 
@@ -181,12 +182,13 @@ class HomeFragment : Fragment(), OnItemClickListener {
 
           }
 
-             return mFrags.get(index)
+             return mFrags[index]
          }
 
          override fun getCount(): Int {
             return Integer.MAX_VALUE
           }
+
 
      }
 }
