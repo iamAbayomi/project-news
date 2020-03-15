@@ -74,6 +74,7 @@ class HomeFragment : Fragment(), OnItemClickListener {
 
         mIndicator = MyPageIndicator(activity!!.applicationContext, mLinearLayout!!, mViewPager!! , R.drawable.tab_selector)
         mIndicator!!.setPageCount(fragments.size)
+        mIndicator!!.show()
 
         fragments.add(FeaturedFragment().newInstance(R.drawable.loading.toString(),
             "Loading"))
@@ -117,12 +118,13 @@ class HomeFragment : Fragment(), OnItemClickListener {
 
         })
         if(isConnected){
-            mIndicator!!.show()
 
         }else{
             Toast.makeText(context, "No Internet, Please check your Internet Connection" , Toast.LENGTH_LONG)
                 .show()
         }
+
+
         return root
     }
 
