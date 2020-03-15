@@ -116,8 +116,6 @@ class HomeFragment : Fragment(), OnItemClickListener {
             mAdapter!!.notifyDataSetChanged()
 
         })
-
-
         if(isConnected){
             mIndicator!!.show()
 
@@ -125,8 +123,6 @@ class HomeFragment : Fragment(), OnItemClickListener {
             Toast.makeText(context, "No Internet, Please check your Internet Connection" , Toast.LENGTH_LONG)
                 .show()
         }
-
-
         return root
     }
 
