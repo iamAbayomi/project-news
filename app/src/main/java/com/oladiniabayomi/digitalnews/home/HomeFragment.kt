@@ -52,7 +52,7 @@ class HomeFragment : Fragment(), OnItemClickListener {
     private var currentArticles = ArrayList<Articles>()
 
     //ViewPager variables
-    var fragments = ArrayList<Fragment>()
+    public var fragments = ArrayList<Fragment>()
     private var viewPager: ViewPager? = null
     private lateinit var skeleton: Skeleton
 
@@ -71,6 +71,8 @@ class HomeFragment : Fragment(), OnItemClickListener {
             articles.let { articlesRecyclerViewAdapter!!.setArticles(ArrayList(it)) }
         })
 
+
+
         //Checking Internet
         val cm = context!!.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         val activeNetwork: NetworkInfo? = cm.activeNetworkInfo
@@ -78,7 +80,28 @@ class HomeFragment : Fragment(), OnItemClickListener {
         //Skeleton Views
         //skeleton.showSkeleton()
         homeViewModel.allCategories.observe(viewLifecycleOwner, Observer { articles ->
+            if(articles != null) {
+                fragments.clear()
+                for (x in 0 until 5) {
+                    try {
+                        fragments.add(FragmentViewPager().newInstance(articles[x].articlesThumbnailImage!!,
+                            articles[x].articlesTitle!!.rendered!!))
+
+
+                    }
+                    catch (e: Exception) {
+                    } }
+            }
         })
+
+        if(isConnected){
+
+        }else{
+            Toast.makeText(context, "No Internet, Please check your Internet Connection" , Toast.LENGTH_LONG)
+                .show()
+        }
+
+
 
 
 
@@ -112,12 +135,16 @@ class HomeFragment : Fragment(), OnItemClickListener {
         recyclerView.adapter = articlesRecyclerViewAdapter
     }
 
-    private class MyPagerAdapter(fm: FragmentManager) : FragmentPagerAdapter(fm) {
+   class MyPagerAdapter(fm: FragmentManager) : FragmentPagerAdapter(fm) {
+
+       var fragment = HomeFragment().fragments
+
         override fun getCount(): Int {
             return 4
         }
 
         override fun getItem(position: Int): Fragment {
+
             if (position == 0) {
                 return FragmentViewPager().newInstance(R.drawable.loading.toString(), "Loading")
             } else if (position == 1) {
@@ -131,22 +158,30 @@ class HomeFragment : Fragment(), OnItemClickListener {
 
             }
 
+        }
 
-            /*  @Override
-        public fun android.support.v4.app.Fragment getItem(int pos) {
-            switch (pos) {
-                case 0:
-                    return FragmentViewPager.newInstance(getString(R.string.title_section1), R.drawable.rock);
-                case 1:
-                    return FragmentViewPager.newInstance(getString(R.string.title_section2), R.drawable.paper);
-                case 2:
-                    return FragmentViewPager.newInstance(getString(R.string.title_section3), R.drawable.scissors);
-                default:
-                    return FragmentViewPager.newInstance(getString(R.string.title_section1), R.drawable.rock);
+
+        fun fragmentFromDb(position: Int): Fragment{
+            if (position == 0) {
+
+                return fragment[0]
+            } else if (position == 1) {
+
+                return fragment[1]
+            } else if (position == 2) {
+
+                return fragment[2]
+            } else if (position == 3) {
+
+                return fragment[3]
             }
-        }*/
+            else {
+
+                return fragment[4]
+            }
 
         }
+
 
     }
 }
