@@ -53,10 +53,14 @@ class HomeFragment : Fragment(), OnItemClickListener {
 
     //ViewPager variables
     var fragments = ArrayList<Fragment>()
-    private var viewPager : ViewPager? = null
+    private var viewPager: ViewPager? = null
     private lateinit var skeleton: Skeleton
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         //Initializing views in fragment
         val root = inflater.inflate(R.layout.fragment_home, container, false)
         //recyclerview Initialization
@@ -64,7 +68,8 @@ class HomeFragment : Fragment(), OnItemClickListener {
 
         //observing articles in Recycler View in android
         homeViewModel.allArticles.observe(viewLifecycleOwner, Observer { articles ->
-            articles.let { articlesRecyclerViewAdapter!!.setArticles(ArrayList(it))} })
+            articles.let { articlesRecyclerViewAdapter!!.setArticles(ArrayList(it)) }
+        })
 
         //Checking Internet
         val cm = context!!.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
@@ -72,10 +77,14 @@ class HomeFragment : Fragment(), OnItemClickListener {
         val isConnected: Boolean = activeNetwork?.isConnectedOrConnecting == true
         //Skeleton Views
         //skeleton.showSkeleton()
-        homeViewModel.allCategories.observe(  viewLifecycleOwner, Observer { articles ->
+        homeViewModel.allCategories.observe(viewLifecycleOwner, Observer { articles ->
         })
 
+
+
         return root
+
+
     }
 
 
@@ -86,43 +95,44 @@ class HomeFragment : Fragment(), OnItemClickListener {
     }
 
 
-    fun initialization(root: View){
+    fun initialization(root: View) {
         homeViewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
         // initialization
         recyclerView = root.findViewById(R.id.home_recyclerview)
         //Setting ViewPager
         viewPager = root.findViewById(R.id.viewPager)
+        viewPager!!.adapter = MyPagerAdapter(activity!!.supportFragmentManager)
         // Either use an existing Skeleton layout
-        skeleton = recyclerView.applySkeleton(R.layout.article_item_view,10)
+        skeleton = recyclerView.applySkeleton(R.layout.article_item_view, 10)
         //Setting Articles Adapter
         articlesRecyclerViewAdapter =
             context?.let { ArticlesRecyclerViewAdapter(it, currentArticles, this) }
         //setting Recycler Views attribute
-        recyclerView.layoutManager =  LinearLayoutManager(activity)
+        recyclerView.layoutManager = LinearLayoutManager(activity)
         recyclerView.adapter = articlesRecyclerViewAdapter
     }
 
-     private class MyPagerAdapter( fm :FragmentManager ) : FragmentPagerAdapter() {
-         override fun getCount(): Int {
-             return 5
-         }
+    private class MyPagerAdapter(fm: FragmentManager) : FragmentPagerAdapter(fm) {
+        override fun getCount(): Int {
+            return 4
+        }
 
-         override fun getItem(position: Int): Fragment {
-             if(position == 0) {
+        override fun getItem(position: Int): Fragment {
+            if (position == 0) {
+                return FragmentViewPager().newInstance(R.drawable.loading.toString(), "Loading")
+            } else if (position == 1) {
+                return FragmentViewPager().newInstance(R.drawable.loading.toString(), "Loading")
+            } else if (position == 2) {
+                return FragmentViewPager().newInstance(R.drawable.loading.toString(), "Loading")
+            } else if (position == 3) {
+                return FragmentViewPager().newInstance(R.drawable.loading.toString(), "Loading")
+            } else {
+                return FragmentViewPager().newInstance(R.drawable.loading.toString(), "Loading")
 
-                 return FragmentViewPager.
-             }
-                 else if()
-                 return FragmentViewPager.newInstance(getString(R.string.title_section2), R.drawable.paper);
-                 case 2:
-                 return FragmentViewPager.newInstance(getString(R.string.title_section3), R.drawable.scissors);
-                 default:
-                 return FragmentViewPager.newInstance(getString(R.string.title_section1), R.drawable.rock);
-             }  }
+            }
 
 
-
-       /*  @Override
+            /*  @Override
         public fun android.support.v4.app.Fragment getItem(int pos) {
             switch (pos) {
                 case 0:
@@ -136,7 +146,10 @@ class HomeFragment : Fragment(), OnItemClickListener {
             }
         }*/
 
+        }
+
     }
+}
 
 
 
