@@ -102,9 +102,7 @@ class HomeFragment : Fragment(), OnItemClickListener {
                 .show()*/
             if(articles != null) {
                 fragments.clear()
-
                 for (x in 0 until 5) {
-
                     try {
                         fragments.add(FeaturedFragment().newInstance(articles[x].articlesThumbnailImage!!,
                             articles[x].articlesTitle!!.rendered!!))
@@ -112,10 +110,8 @@ class HomeFragment : Fragment(), OnItemClickListener {
                     } }
             }else{
                 mLinearLayout!!.visibility = View.INVISIBLE
-
             }
             mAdapter!!.notifyDataSetChanged()
-
         })
         if(isConnected){
 
@@ -164,9 +160,7 @@ class HomeFragment : Fragment(), OnItemClickListener {
 
      fun addFragments(){
 
-        }
-
-
+     }
 
      class CustomPagerAdapter2(fm: FragmentManager, frags: List<Fragment>) : FragmentStatePagerAdapter(fm) {
         var mFrags : List<Fragment> = frags
