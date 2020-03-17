@@ -32,7 +32,7 @@ class FeaturedFragment : Fragment() {
     fun newInstance(  imageUrl: String,  title : String ) :FeaturedFragment {
         val fragment = FeaturedFragment ()
         val args = Bundle()
-     //   var imageUrl : String = articles.articlesThumbnailImage!!
+        //var imageUrl : String = articles.articlesThumbnailImage!!
        // var title :String = articles.articlesTitle!!.rendered!!
         args.putString(arg, imageUrl)
         args.putString(args2, title)

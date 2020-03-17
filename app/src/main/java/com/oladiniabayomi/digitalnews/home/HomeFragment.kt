@@ -13,6 +13,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentPagerAdapter
 import androidx.fragment.app.FragmentStatePagerAdapter
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -24,6 +25,7 @@ import androidx.viewpager.widget.ViewPager
 import com.faltenreich.skeletonlayout.Skeleton
 import com.faltenreich.skeletonlayout.applySkeleton
 import com.oladiniabayomi.digitalarticles.articles.Articles
+import com.oladiniabayomi.digitalnews.FragmentViewPager
 import com.oladiniabayomi.digitalnews.MyPageIndicator
 import com.oladiniabayomi.digitalnews.R
 import com.oladiniabayomi.digitalnews.articles.ArticlesRecyclerViewAdapter
@@ -50,76 +52,28 @@ class HomeFragment : Fragment(), OnItemClickListener {
     private var currentArticles = ArrayList<Articles>()
 
     //ViewPager variables
-    var mViewPager: ViewPager? = null;
-    var mLinearLayout: LinearLayout? = null
-    var mAdapter: CustomPagerAdapter2? = null
-    var mIndicator : MyPageIndicator? = null
     var fragments = ArrayList<Fragment>()
-
+    private var viewPager : ViewPager? = null
     private lateinit var skeleton: Skeleton
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-
+        //Initializing views in fragment
         val root = inflater.inflate(R.layout.fragment_home, container, false)
-
-        /*for ( x in 0..5 ){
-            fragments.add(FeaturedFragment().newInstance("https://i2.wp.com/www.tell.com.ng/wp-content/uploads/2020/02/images-1-1.jpeg?fit=610%2C503&ssl=1",
-                "Loading"))
-        }*/
+        //recyclerview Initialization
         initialization(root)
 
+        //observing articles in Recycler View in android
         homeViewModel.allArticles.observe(viewLifecycleOwner, Observer { articles ->
             articles.let { articlesRecyclerViewAdapter!!.setArticles(ArrayList(it))} })
-        mViewPager!!.adapter= mAdapter
 
-        mIndicator = MyPageIndicator(activity!!.applicationContext, mLinearLayout!!, mViewPager!! , R.drawable.tab_selector)
-        mIndicator!!.setPageCount(fragments.size)
-        mIndicator!!.show()
-
-        fragments.add(FeaturedFragment().newInstance(R.drawable.loading.toString(),
-            "Loading"))
-        fragments.add(FeaturedFragment().newInstance(R.drawable.loading.toString(),
-                "Loading"))
-        fragments.add(FeaturedFragment().newInstance(R.drawable.loading.toString(),
-                "Loading"))
-        fragments.add(FeaturedFragment().newInstance(R.drawable.loading.toString(),
-                "Loading"))
-        fragments.add(FeaturedFragment().newInstance(R.drawable.loading.toString(),
-                "Loading"))
-
-        mAdapter!!.notifyDataSetChanged()
-
-
-
+        //Checking Internet
         val cm = context!!.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         val activeNetwork: NetworkInfo? = cm.activeNetworkInfo
         val isConnected: Boolean = activeNetwork?.isConnectedOrConnecting == true
-
-
+        //Skeleton Views
         //skeleton.showSkeleton()
-        homeViewModel.allCategories.observe(  viewLifecycleOwner, Observer { articles->
-            /*Toast.makeText(context, articles[1].articlesFullText!!.rendered , Toast.LENGTH_LONG)
-                .show()*/
-            if(articles != null) {
-                fragments.clear()
-                for (x in 0 until 5) {
-                    try {
-                        fragments.add(FeaturedFragment().newInstance(articles[x].articlesThumbnailImage!!,
-                            articles[x].articlesTitle!!.rendered!!))
-                    } catch (e: Exception) {
-                    } }
-            }else{
-                mLinearLayout!!.visibility = View.INVISIBLE
-            }
-            mAdapter!!.notifyDataSetChanged()
+        homeViewModel.allCategories.observe(  viewLifecycleOwner, Observer { articles ->
         })
-        if(isConnected){
-
-        }else{
-            Toast.makeText(context, "No Internet, Please check your Internet Connection" , Toast.LENGTH_LONG)
-                .show()
-        }
-
 
         return root
     }
@@ -135,52 +89,54 @@ class HomeFragment : Fragment(), OnItemClickListener {
     fun initialization(root: View){
         homeViewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
         // initialization
-        mAdapter = CustomPagerAdapter2(activity!!.supportFragmentManager,fragments)
-        mViewPager = root.findViewById(R.id.viewPager)
-        mLinearLayout = root.findViewById(R.id.pagesContainer)
         recyclerView = root.findViewById(R.id.home_recyclerview)
-
-        // Either use an existing Skeletonlayout
+        //Setting ViewPager
+        viewPager = root.findViewById(R.id.viewPager)
+        // Either use an existing Skeleton layout
         skeleton = recyclerView.applySkeleton(R.layout.article_item_view,10)
-
+        //Setting Articles Adapter
         articlesRecyclerViewAdapter =
             context?.let { ArticlesRecyclerViewAdapter(it, currentArticles, this) }
-
         //setting Recycler Views attribute
         recyclerView.layoutManager =  LinearLayoutManager(activity)
         recyclerView.adapter = articlesRecyclerViewAdapter
-
     }
 
-
-    fun addCategories(){
-
-    }
-
-
-     fun addFragments(){
-
-     }
-
-     class CustomPagerAdapter2(fm: FragmentManager, frags: List<Fragment>) : FragmentStatePagerAdapter(fm) {
-        var mFrags : List<Fragment> = frags
-        var index: Int = 0
-
-         override fun getItem(position: Int): Fragment {
-
-          try{
-              index = position % mFrags.size
-          }catch (e : Exception){
-
-          }
-
-             return mFrags[index]
+     private class MyPagerAdapter( fm :FragmentManager ) : FragmentPagerAdapter() {
+         override fun getCount(): Int {
+             return 5
          }
 
-         override fun getCount(): Int {
-            return Integer.MAX_VALUE
-          }
+         override fun getItem(position: Int): Fragment {
+             if(position == 0) {
+
+                 return FragmentViewPager.
+             }
+                 else if()
+                 return FragmentViewPager.newInstance(getString(R.string.title_section2), R.drawable.paper);
+                 case 2:
+                 return FragmentViewPager.newInstance(getString(R.string.title_section3), R.drawable.scissors);
+                 default:
+                 return FragmentViewPager.newInstance(getString(R.string.title_section1), R.drawable.rock);
+             }  }
 
 
-     }
-}
+
+       /*  @Override
+        public fun android.support.v4.app.Fragment getItem(int pos) {
+            switch (pos) {
+                case 0:
+                    return FragmentViewPager.newInstance(getString(R.string.title_section1), R.drawable.rock);
+                case 1:
+                    return FragmentViewPager.newInstance(getString(R.string.title_section2), R.drawable.paper);
+                case 2:
+                    return FragmentViewPager.newInstance(getString(R.string.title_section3), R.drawable.scissors);
+                default:
+                    return FragmentViewPager.newInstance(getString(R.string.title_section1), R.drawable.rock);
+            }
+        }*/
+
+    }
+
+
+
