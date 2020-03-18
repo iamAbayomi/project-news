@@ -106,12 +106,12 @@ class ArticleRepository( private val articlesDao: ArticlesDao, var context: Appl
                          if (response!!.code() == 200) {
                              data.value = response.body()
                              currentArticles.addAll(response.body())
-                             Toast.makeText(
+                            /* Toast.makeText(
                                  context,
                                  response.body()[1].toString(),
                                  Toast.LENGTH_LONG
-                             )
-                                 .show()
+                             ).show()*/
+
 
                              val sdf = SimpleDateFormat("mm")
                              val currentDate = sdf.format(Date())

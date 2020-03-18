@@ -68,7 +68,7 @@ class DetailedArticleActivity : AppCompatActivity() {
                    .load(unchecked)
                    .into(saved_icon)
 
-               Toast.makeText(this, int.toString(), Toast.LENGTH_LONG ).show()
+              // Toast.makeText(this, int.toString(), Toast.LENGTH_LONG ).show()
 
            })
 

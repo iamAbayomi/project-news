@@ -28,6 +28,7 @@ import com.oladiniabayomi.digitalnews.articles.ArticlesRecyclerViewAdapter
 import com.oladiniabayomi.digitalnews.detailed_article.DetailedArticleActivity
 import com.oladiniabayomi.digitalnews.featured.FeaturedFragment
 import com.oladiniabayomi.digitalnews.interfaces.OnItemClickListener
+import kotlinx.android.synthetic.main.fragment_home.*
 import java.lang.Exception
 
 class HomeFragment : Fragment(), OnItemClickListener {
@@ -141,17 +142,15 @@ class HomeFragment : Fragment(), OnItemClickListener {
                         fragments.add(
                             FeaturedFragment().newInstance(
                                 articles[x].articlesThumbnailImage!!,
-                                articles[x].articlesTitle!!.rendered!!
-                            )
-                        )
-                    } catch (e: Exception) {
-                    }
-                }
-            } else {
-                mLinearLayout!!.visibility = View.INVISIBLE
+                                articles[x].articlesTitle!!.rendered!!))
+                    } catch (e: Exception) { } }
             }
             mAdapter!!.notifyDataSetChanged()
-        })
+
+            viewPager.adapter = mAdapter
+        }
+        )
+
         if (isConnected) {
 
         } else {

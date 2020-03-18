@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#BB6BD9</color>
     <color name="colorPrimar">#FFFFFF</color>
     <color name="colorPrimaryDark">#FFFFFF</color>
     <color name="colorAccent">#BB6BD9</color>
     <color name="grey">#A6AAB4</color>
     <color name="purple">#BB6BD9</color>
-    <color name="appPrimaryColor">#615858</color>
+    <color name="solid_one">#6AB999</color>
+    <color name="solid_two">#D55A5D</color>
+    <color name="solid_three">#4A90E2</color>
 </resources>
