@@ -5,6 +5,8 @@ import android.os.Bundle
 import com.codemybrainsout.onboarder.AhoyOnboarderActivity
 import com.codemybrainsout.onboarder.AhoyOnboarderCard
 import com.oladiniabayomi.digitalnews.R
+import com.oladiniabayomi.digitalnews.helpers.SignInHelper
+import com.oladiniabayomi.digitalnews.helpers.WalkThroughHelper
 import com.oladiniabayomi.digitalnews.views.MainActivity
 
 
@@ -17,6 +19,12 @@ class OnboardingActivity : AhoyOnboarderActivity() {
     private var marginLeft: Int = 4
     private var marginRight: Int = 4
     private var  marginBottom: Int = 4
+
+
+    private var signInHelper: SignInHelper? = null
+
+
+    private var preferenceHelper: WalkThroughHelper? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -57,12 +65,26 @@ class OnboardingActivity : AhoyOnboarderActivity() {
 
         setFinishButtonTitle("Get Started")
 
+
+
+
+        preferenceHelper = WalkThroughHelper(this)
+
+
+        if(preferenceHelper!!.intro.equals("no")){
+            val intent  = Intent(this, MainActivity::class.java)
+            startActivity(intent)
+        }
+
     }
 
     override fun onFinishButtonPressed() {
 
         val intent  = Intent(this, MainActivity::class.java)
         startActivity(intent)
+
+        preferenceHelper!!.putIntro("no")
+
     }
 
 }

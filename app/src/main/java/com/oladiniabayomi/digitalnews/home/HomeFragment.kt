@@ -18,6 +18,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.LayoutManager
+import androidx.viewpager.widget.PagerAdapter
 import androidx.viewpager.widget.ViewPager
 import com.faltenreich.skeletonlayout.Skeleton
 import com.faltenreich.skeletonlayout.applySkeleton
@@ -30,6 +31,8 @@ import com.oladiniabayomi.digitalnews.featured.FeaturedFragment
 import com.oladiniabayomi.digitalnews.interfaces.OnItemClickListener
 import kotlinx.android.synthetic.main.fragment_home.*
 import java.lang.Exception
+import java.util.*
+import kotlin.collections.ArrayList
 
 class HomeFragment : Fragment(), OnItemClickListener {
 
@@ -135,8 +138,12 @@ class HomeFragment : Fragment(), OnItemClickListener {
         homeViewModel.allCategories.observe(viewLifecycleOwner, Observer { articles ->
             /*Toast.makeText(context, articles[1].articlesFullText!!.rendered , Toast.LENGTH_LONG)
                 .show()*/
-            if (articles != null) {
+            if(fragments!= null){
                 fragments.clear()
+            }
+
+            if (articles != null) {
+
                 for (x in 0 until 5) {
                     try {
                         fragments.add(
@@ -147,7 +154,7 @@ class HomeFragment : Fragment(), OnItemClickListener {
             }
             mAdapter!!.notifyDataSetChanged()
 
-            viewPager.adapter = mAdapter
+          //  viewPager.adapter = mAdapter
         }
         )
 
@@ -221,6 +228,9 @@ class HomeFragment : Fragment(), OnItemClickListener {
             return Integer.MAX_VALUE
         }
 
+        override fun getItemPosition(`object`: Any): Int {
+            return PagerAdapter.POSITION_NONE
+        }
 /*
         override fun getRealCount(): Int {
             return mFrags.size
