@@ -24,6 +24,7 @@ import androidx.viewpager.widget.ViewPager
 import com.faltenreich.skeletonlayout.Skeleton
 import com.faltenreich.skeletonlayout.applySkeleton
 import com.oladiniabayomi.digitalarticles.articles.Articles
+import com.oladiniabayomi.digitalnews.LoopingPagerAdapter
 import com.oladiniabayomi.digitalnews.MyPageIndicator
 import com.oladiniabayomi.digitalnews.R
 import com.oladiniabayomi.digitalnews.articles.ArticlesRecyclerViewAdapter
@@ -53,12 +54,16 @@ class HomeFragment : Fragment(), OnItemClickListener {
     var mViewPager: ViewPager? = null;
     var mLinearLayout: LinearLayout? = null
     var mAdapter: CustomPagerAdapter2? = null
-    var mIndicator : MyPageIndicator? = null
-    var fragments = ArrayList<Fragment>()
+    var mIndicator: MyPageIndicator? = null
+    var fragments = ArrayList<Fragment>(5)
 
     private lateinit var skeleton: Skeleton
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
 
         val root = inflater.inflate(R.layout.fragment_home, container, false)
 
@@ -69,27 +74,52 @@ class HomeFragment : Fragment(), OnItemClickListener {
         initialization(root)
 
         homeViewModel.allArticles.observe(viewLifecycleOwner, Observer { articles ->
-            articles.let { articlesRecyclerViewAdapter!!.setArticles(ArrayList(it))} })
-        mViewPager!!.adapter= mAdapter
+            articles.let { articlesRecyclerViewAdapter!!.setArticles(ArrayList(it)) }
+        })
 
-        mIndicator = MyPageIndicator(activity!!.applicationContext, mLinearLayout!!, mViewPager!! , R.drawable.tab_selector)
-        mIndicator!!.setPageCount(fragments.size)
+        fragments.add(
+            FeaturedFragment().newInstance(
+                R.drawable.loading.toString(),
+                "Loading"
+            )
+        )
+        fragments.add(
+            FeaturedFragment().newInstance(
+                R.drawable.loading.toString(),
+                "Loading"
+            )
+        )
+        fragments.add(
+            FeaturedFragment().newInstance(
+                R.drawable.loading.toString(),
+                "Loading"
+            )
+        )
+        fragments.add(
+            FeaturedFragment().newInstance(
+                R.drawable.loading.toString(),
+                "Loading"
+            )
+        )
+        fragments.add(
+            FeaturedFragment().newInstance(
+                R.drawable.loading.toString(),
+                "Loading"
+            )
+        )
+
+
+        mAdapter = CustomPagerAdapter2(activity!!.supportFragmentManager, fragments)
+        mViewPager!!.adapter = mAdapter
+
+        mIndicator = MyPageIndicator(
+            activity!!.applicationContext,
+            mLinearLayout!!,
+            mViewPager!!,
+            R.drawable.tab_selector
+        )
+        mIndicator!!.setPageCount(5)
         mIndicator!!.show()
-
-        fragments.add(FeaturedFragment().newInstance(R.drawable.loading.toString(),
-            "Loading"))
-        fragments.add(FeaturedFragment().newInstance(R.drawable.loading.toString(),
-                "Loading"))
-        fragments.add(FeaturedFragment().newInstance(R.drawable.loading.toString(),
-                "Loading"))
-        fragments.add(FeaturedFragment().newInstance(R.drawable.loading.toString(),
-                "Loading"))
-        fragments.add(FeaturedFragment().newInstance(R.drawable.loading.toString(),
-                "Loading"))
-
-        mAdapter!!.notifyDataSetChanged()
-
-
 
         val cm = context!!.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         val activeNetwork: NetworkInfo? = cm.activeNetworkInfo
@@ -97,26 +127,35 @@ class HomeFragment : Fragment(), OnItemClickListener {
 
 
         //skeleton.showSkeleton()
-        homeViewModel.allCategories.observe(  viewLifecycleOwner, Observer { articles->
+        homeViewModel.allCategories.observe(viewLifecycleOwner, Observer { articles ->
             /*Toast.makeText(context, articles[1].articlesFullText!!.rendered , Toast.LENGTH_LONG)
                 .show()*/
-            if(articles != null) {
+            if (articles != null) {
                 fragments.clear()
                 for (x in 0 until 5) {
                     try {
-                        fragments.add(FeaturedFragment().newInstance(articles[x].articlesThumbnailImage!!,
-                            articles[x].articlesTitle!!.rendered!!))
+                        fragments.add(
+                            FeaturedFragment().newInstance(
+                                articles[x].articlesThumbnailImage!!,
+                                articles[x].articlesTitle!!.rendered!!
+                            )
+                        )
                     } catch (e: Exception) {
-                    } }
-            }else{
+                    }
+                }
+            } else {
                 mLinearLayout!!.visibility = View.INVISIBLE
             }
             mAdapter!!.notifyDataSetChanged()
         })
-        if(isConnected){
+        if (isConnected) {
 
-        }else{
-            Toast.makeText(context, "No Internet, Please check your Internet Connection" , Toast.LENGTH_LONG)
+        } else {
+            Toast.makeText(
+                context,
+                "No Internet, Please check your Internet Connection",
+                Toast.LENGTH_LONG
+            )
                 .show()
         }
 
@@ -132,55 +171,57 @@ class HomeFragment : Fragment(), OnItemClickListener {
     }
 
 
-    fun initialization(root: View){
+    fun initialization(root: View) {
         homeViewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
         // initialization
-        mAdapter = CustomPagerAdapter2(activity!!.supportFragmentManager,fragments)
         mViewPager = root.findViewById(R.id.viewPager)
         mLinearLayout = root.findViewById(R.id.pagesContainer)
         recyclerView = root.findViewById(R.id.home_recyclerview)
 
         // Either use an existing Skeletonlayout
-        skeleton = recyclerView.applySkeleton(R.layout.article_item_view,10)
+        skeleton = recyclerView.applySkeleton(R.layout.article_item_view, 10)
 
         articlesRecyclerViewAdapter =
             context?.let { ArticlesRecyclerViewAdapter(it, currentArticles, this) }
 
         //setting Recycler Views attribute
-        recyclerView.layoutManager =  LinearLayoutManager(activity)
+        recyclerView.layoutManager = LinearLayoutManager(activity)
         recyclerView.adapter = articlesRecyclerViewAdapter
 
     }
 
 
-    fun addCategories(){
+    fun addCategories() {
 
     }
 
 
-     fun addFragments(){
+    fun addFragments() {
 
-     }
+    }
 
-     class CustomPagerAdapter2(fm: FragmentManager, frags: List<Fragment>) : FragmentStatePagerAdapter(fm) {
-        var mFrags : List<Fragment> = frags
-        var index: Int = 0
+    class CustomPagerAdapter2 :
+        FragmentStatePagerAdapter {
 
-         override fun getItem(position: Int): Fragment {
+        var mFrags: List<Fragment> = ArrayList(5)
 
-          try{
-              index = position % mFrags.size
-          }catch (e : Exception){
+        constructor(fm: FragmentManager, frags: List<Fragment>) : super(fm){
+            mFrags = frags
+        }
 
-          }
+        override fun getItem(position: Int): Fragment {
+        ///    var index: Int = position % mFrags.size
+            return mFrags[position]
 
-             return mFrags[index]
-         }
+        }
+        override fun getCount(): Int {
+            return 5
+        }
 
-         override fun getCount(): Int {
-            return Integer.MAX_VALUE
-          }
-
-
-     }
+/*
+        override fun getRealCount(): Int {
+            return mFrags.size
+        }
+*/
+    }
 }
