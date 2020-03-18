@@ -139,7 +139,7 @@ class HomeFragment : Fragment(), OnItemClickListener {
             /*Toast.makeText(context, articles[1].articlesFullText!!.rendered , Toast.LENGTH_LONG)
                 .show()*/
             if(fragments!= null){
-                fragments.clear()
+               // fragments.clear()
             }
 
             if (articles != null) {
@@ -152,11 +152,12 @@ class HomeFragment : Fragment(), OnItemClickListener {
                                 articles[x].articlesTitle!!.rendered!!))
                     } catch (e: Exception) { } }
             }
-            mAdapter!!.notifyDataSetChanged()
 
-          //  viewPager.adapter = mAdapter
+           // mAdapter!!.notifyDataSetChanged()
+
+            viewPager.adapter = mAdapter
         }
-        )
+          )
 
         if (isConnected) {
 
@@ -220,12 +221,12 @@ class HomeFragment : Fragment(), OnItemClickListener {
         }
 
         override fun getItem(position: Int): Fragment {
-            var index: Int = position % mFrags.size
-            return mFrags[index]
+//            var index: Int = position % mFrags.size
+            return mFrags[position]
 
         }
         override fun getCount(): Int {
-            return Integer.MAX_VALUE
+            return 5
         }
 
         override fun getItemPosition(`object`: Any): Int {
