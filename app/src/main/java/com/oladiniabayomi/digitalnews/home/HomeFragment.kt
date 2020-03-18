@@ -110,7 +110,9 @@ class HomeFragment : Fragment(), OnItemClickListener {
 
 
         mAdapter = CustomPagerAdapter2(activity!!.supportFragmentManager, fragments)
-        mViewPager!!.adapter = mAdapter
+
+
+         mViewPager!!.adapter = mAdapter
 
         mIndicator = MyPageIndicator(
             activity!!.applicationContext,
