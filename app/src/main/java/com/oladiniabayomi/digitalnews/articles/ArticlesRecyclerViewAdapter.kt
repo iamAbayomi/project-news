@@ -64,7 +64,7 @@ class ArticlesRecyclerViewHolder(itemView : View) : RecyclerView.ViewHolder(item
 
         articleTitle.text = HtmlCompat.fromHtml(currentArticles.articlesTitle!!.rendered.toString(), 0)
       //  articleDate.text = currentArticles.articlesTimeStamp
-        articleDate.text = "by John Smith"
+        articleDate.text = " "
 
 
         itemView.setOnClickListener{

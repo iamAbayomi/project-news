@@ -9,14 +9,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
-import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentStatePagerAdapter
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.LayoutManager
@@ -24,21 +22,12 @@ import androidx.viewpager.widget.ViewPager
 import com.faltenreich.skeletonlayout.Skeleton
 import com.faltenreich.skeletonlayout.applySkeleton
 import com.oladiniabayomi.digitalarticles.articles.Articles
-import com.oladiniabayomi.digitalnews.LoopingPagerAdapter
 import com.oladiniabayomi.digitalnews.MyPageIndicator
 import com.oladiniabayomi.digitalnews.R
 import com.oladiniabayomi.digitalnews.articles.ArticlesRecyclerViewAdapter
 import com.oladiniabayomi.digitalnews.detailed_article.DetailedArticleActivity
 import com.oladiniabayomi.digitalnews.featured.FeaturedFragment
 import com.oladiniabayomi.digitalnews.interfaces.OnItemClickListener
-import com.oladiniabayomi.digitalnews.network.PostsService
-import kotlinx.android.synthetic.main.fragment_home.*
-import org.jsoup.Jsoup
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 import java.lang.Exception
 
 class HomeFragment : Fragment(), OnItemClickListener {
@@ -55,7 +44,6 @@ class HomeFragment : Fragment(), OnItemClickListener {
     var mLinearLayout: LinearLayout? = null
     var mAdapter: CustomPagerAdapter2? = null
     var mIndicator: MyPageIndicator? = null
-    var fragments = ArrayList<Fragment>(5)
 
     private lateinit var skeleton: Skeleton
 
@@ -77,6 +65,8 @@ class HomeFragment : Fragment(), OnItemClickListener {
             articles.let { articlesRecyclerViewAdapter!!.setArticles(ArrayList(it)) }
         })
 
+        var fragments = ArrayList<Fragment>(5)
+
         fragments.add(
             FeaturedFragment().newInstance(
                 R.drawable.loading.toString(),
@@ -86,46 +76,53 @@ class HomeFragment : Fragment(), OnItemClickListener {
         fragments.add(
             FeaturedFragment().newInstance(
                 R.drawable.loading.toString(),
-                "Loading"
+                " "
             )
         )
         fragments.add(
             FeaturedFragment().newInstance(
                 R.drawable.loading.toString(),
-                "Loading"
+                " "
             )
         )
         fragments.add(
             FeaturedFragment().newInstance(
                 R.drawable.loading.toString(),
-                "Loading"
+                " "
             )
         )
         fragments.add(
             FeaturedFragment().newInstance(
                 R.drawable.loading.toString(),
-                "Loading"
+                " "
             )
         )
 
 
         mAdapter = CustomPagerAdapter2(activity!!.supportFragmentManager, fragments)
+        mViewPager!!.adapter = mAdapter
 
 
-         mViewPager!!.adapter = mAdapter
 
-        mIndicator = MyPageIndicator(
-            activity!!.applicationContext,
-            mLinearLayout!!,
-            mViewPager!!,
-            R.drawable.tab_selector
-        )
-        mIndicator!!.setPageCount(5)
-        mIndicator!!.show()
+        mIndicator = MyPageIndicator(activity!!.applicationContext, mLinearLayout!!, mViewPager!!, R.drawable.tab_selector)
+
+        mIndicator!!.setPageCount(fragments.size)
+
 
         val cm = context!!.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         val activeNetwork: NetworkInfo? = cm.activeNetworkInfo
         val isConnected: Boolean = activeNetwork?.isConnectedOrConnecting == true
+
+        if (!isConnected){
+            mViewPager!!.visibility = View.INVISIBLE
+
+        }else{
+
+            mViewPager!!.visibility = View.VISIBLE
+            mIndicator!!.show()
+
+        }
+
 
 
         //skeleton.showSkeleton()
@@ -205,19 +202,19 @@ class HomeFragment : Fragment(), OnItemClickListener {
     class CustomPagerAdapter2 :
         FragmentStatePagerAdapter {
 
-        var mFrags: List<Fragment> = ArrayList(5)
+        var mFrags: List<Fragment> = ArrayList()
 
         constructor(fm: FragmentManager, frags: List<Fragment>) : super(fm){
             mFrags = frags
         }
 
         override fun getItem(position: Int): Fragment {
-        ///    var index: Int = position % mFrags.size
-            return mFrags[position]
+            var index: Int = position % mFrags.size
+            return mFrags[index]
 
         }
         override fun getCount(): Int {
-            return 5
+            return Integer.MAX_VALUE
         }
 
 /*

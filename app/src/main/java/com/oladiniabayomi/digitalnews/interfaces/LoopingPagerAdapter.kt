@@ -1,4 +1,4 @@
-package com.oladiniabayomi.digitalnews
+package com.oladiniabayomi.digitalnews.interfaces
 
 /**
  * Created by Ali Muzaffar on 5/02/2016.
