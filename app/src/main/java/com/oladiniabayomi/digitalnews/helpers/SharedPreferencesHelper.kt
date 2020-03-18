@@ -1,4 +1,4 @@
-package com.oladiniabayomi.digitalnews
+package com.oladiniabayomi.digitalnews.helpers
 
 import android.app.Application
 import android.content.Context

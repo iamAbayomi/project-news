@@ -1,4 +1,4 @@
-package com.oladiniabayomi.digitalnews
+package com.oladiniabayomi.digitalnews.custom
 
 import android.content.Context
 import android.widget.ImageView

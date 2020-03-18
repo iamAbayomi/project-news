@@ -4,7 +4,7 @@ import android.app.Application
 import android.widget.Toast
 import androidx.lifecycle.*
 import com.oladiniabayomi.digitalarticles.articles.Articles
-import com.oladiniabayomi.digitalnews.SharedPreferencesHelper
+import com.oladiniabayomi.digitalnews.helpers.SharedPreferencesHelper
 import com.oladiniabayomi.digitalnews.articles.ArticlesDao
 import com.oladiniabayomi.digitalnews.articles.Instantiate
 import com.oladiniabayomi.digitalnews.network.PostsService
@@ -42,7 +42,8 @@ class ArticleRepository( private val articlesDao: ArticlesDao, var context: Appl
     }
 
     fun  getArticles() : LiveData<List<Articles>> {
-        var sharedPreferences :SharedPreferencesHelper = SharedPreferencesHelper()
+        var sharedPreferences : SharedPreferencesHelper =
+            SharedPreferencesHelper()
         return if (sharedPreferences.getSharedPrefs(context) != "sent" )
         {
             Toast.makeText(context, "I am here", Toast.LENGTH_LONG).show()

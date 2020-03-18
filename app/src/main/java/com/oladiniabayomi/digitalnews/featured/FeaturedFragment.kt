@@ -6,15 +6,11 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import android.widget.TextView
 import com.bumptech.glide.Glide
-import com.oladiniabayomi.digitalarticles.articles.Articles
-import com.oladiniabayomi.digitalnews.ProportionalImageView
+import com.oladiniabayomi.digitalnews.custom.ProportionalImageView
 
 import com.oladiniabayomi.digitalnews.R
-import kotlinx.android.synthetic.main.activity_detailed_article.*
-import kotlinx.android.synthetic.main.fragment_featured.*
 
 /**
  * A simple [Fragment] subclass.

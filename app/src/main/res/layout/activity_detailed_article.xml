@@ -16,7 +16,7 @@
             android:layout_height="match_parent">
 
 
-    <com.oladiniabayomi.digitalnews.ProportionalImageView
+    <com.oladiniabayomi.digitalnews.custom.ProportionalImageView
         android:id="@+id/text_imageView"
         android:layout_width="match_parent"
         android:layout_height="400dp"

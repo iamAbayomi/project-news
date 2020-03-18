@@ -4,7 +4,6 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.text.HtmlCompat
 import androidx.recyclerview.widget.RecyclerView
@@ -13,7 +12,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.resource.bitmap.DownsampleStrategy
 import com.bumptech.glide.request.RequestOptions
 import com.oladiniabayomi.digitalarticles.articles.Articles
-import com.oladiniabayomi.digitalnews.ProportionalImageView
+import com.oladiniabayomi.digitalnews.custom.ProportionalImageView
 import com.oladiniabayomi.digitalnews.R
 import com.oladiniabayomi.digitalnews.interfaces.OnItemClickListener
 

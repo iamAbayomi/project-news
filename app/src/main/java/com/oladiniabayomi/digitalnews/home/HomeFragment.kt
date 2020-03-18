@@ -22,7 +22,7 @@ import androidx.viewpager.widget.ViewPager
 import com.faltenreich.skeletonlayout.Skeleton
 import com.faltenreich.skeletonlayout.applySkeleton
 import com.oladiniabayomi.digitalarticles.articles.Articles
-import com.oladiniabayomi.digitalnews.MyPageIndicator
+import com.oladiniabayomi.digitalnews.custom.MyPageIndicator
 import com.oladiniabayomi.digitalnews.R
 import com.oladiniabayomi.digitalnews.articles.ArticlesRecyclerViewAdapter
 import com.oladiniabayomi.digitalnews.detailed_article.DetailedArticleActivity
@@ -70,7 +70,7 @@ class HomeFragment : Fragment(), OnItemClickListener {
         fragments.add(
             FeaturedFragment().newInstance(
                 R.drawable.loading.toString(),
-                "Loading"
+                " "
             )
         )
         fragments.add(
@@ -104,7 +104,12 @@ class HomeFragment : Fragment(), OnItemClickListener {
 
 
 
-        mIndicator = MyPageIndicator(activity!!.applicationContext, mLinearLayout!!, mViewPager!!, R.drawable.tab_selector)
+        mIndicator = MyPageIndicator(
+            activity!!.applicationContext,
+            mLinearLayout!!,
+            mViewPager!!,
+            R.drawable.tab_selector
+        )
 
         mIndicator!!.setPageCount(fragments.size)
 
