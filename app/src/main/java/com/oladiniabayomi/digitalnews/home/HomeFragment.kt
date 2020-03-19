@@ -28,6 +28,7 @@ import com.oladiniabayomi.digitalnews.R
 import com.oladiniabayomi.digitalnews.articles.ArticlesRecyclerViewAdapter
 import com.oladiniabayomi.digitalnews.detailed_article.DetailedArticleActivity
 import com.oladiniabayomi.digitalnews.featured.FeaturedFragment
+import com.oladiniabayomi.digitalnews.helpers.SignInHelper
 import com.oladiniabayomi.digitalnews.interfaces.OnItemClickListener
 import kotlinx.android.synthetic.main.fragment_home.*
 import java.lang.Exception
@@ -50,6 +51,8 @@ class HomeFragment : Fragment(), OnItemClickListener {
     var mIndicator: MyPageIndicator? = null
 
     private lateinit var skeleton: Skeleton
+    private var signInHelper: SignInHelper? = null
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -65,57 +68,52 @@ class HomeFragment : Fragment(), OnItemClickListener {
         }*/
         initialization(root)
 
+        signInHelper = SignInHelper(activity)
+
         homeViewModel.allArticles.observe(viewLifecycleOwner, Observer { articles ->
             articles.let { articlesRecyclerViewAdapter!!.setArticles(ArrayList(it)) }
         })
 
         var fragments = ArrayList<Fragment>(5)
 
-        fragments.add(
-            FeaturedFragment().newInstance(
-                R.drawable.loading.toString(),
-                " "
+
+       // addFragments(fragments)
+
+
+        homeViewModel.allCategories.observe(viewLifecycleOwner, Observer { articles ->
+            /*Toast.makeText(context, articles[1].articlesFullText!!.rendered , Toast.LENGTH_LONG)
+                .show()*/
+            if(signInHelper!!.login != "true"){
+                fragments.clear()
+                signInHelper!!.putLogin("true")
+            }
+            if (articles != null) {
+                for (x in 0 until 5) {
+                    try {
+                        fragments.add(
+                            FeaturedFragment().newInstance(
+                                articles[x].articlesThumbnailImage!!,
+                                articles[x].articlesTitle!!.rendered!!))
+                    } catch (e: Exception) { } } }
+          //  mAdapter!!.notifyDataSetChanged()
+            //viewPager.adapter = mAdapter
+            mAdapter = CustomPagerAdapter2(activity!!.supportFragmentManager, fragments)
+            mViewPager!!.adapter = mAdapter
+
+            mIndicator = MyPageIndicator(
+                activity!!.applicationContext,
+                mLinearLayout!!,
+                mViewPager!!,
+                R.drawable.tab_selector
             )
-        )
-        fragments.add(
-            FeaturedFragment().newInstance(
-                R.drawable.loading.toString(),
-                " "
-            )
-        )
-        fragments.add(
-            FeaturedFragment().newInstance(
-                R.drawable.loading.toString(),
-                " "
-            )
-        )
-        fragments.add(
-            FeaturedFragment().newInstance(
-                R.drawable.loading.toString(),
-                " "
-            )
-        )
-        fragments.add(
-            FeaturedFragment().newInstance(
-                R.drawable.loading.toString(),
-                " "
-            )
-        )
 
-
-        mAdapter = CustomPagerAdapter2(activity!!.supportFragmentManager, fragments)
-        mViewPager!!.adapter = mAdapter
+            mIndicator!!.setPageCount(5)
+            mIndicator!!.show()
+        })
 
 
 
-        mIndicator = MyPageIndicator(
-            activity!!.applicationContext,
-            mLinearLayout!!,
-            mViewPager!!,
-            R.drawable.tab_selector
-        )
 
-        mIndicator!!.setPageCount(fragments.size)
 
 
         val cm = context!!.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
@@ -128,37 +126,13 @@ class HomeFragment : Fragment(), OnItemClickListener {
         }else{
 
             mViewPager!!.visibility = View.VISIBLE
-            mIndicator!!.show()
+
 
         }
 
 
 
         //skeleton.showSkeleton()
-        homeViewModel.allCategories.observe(viewLifecycleOwner, Observer { articles ->
-            /*Toast.makeText(context, articles[1].articlesFullText!!.rendered , Toast.LENGTH_LONG)
-                .show()*/
-            if(fragments!= null){
-               // fragments.clear()
-            }
-
-            if (articles != null) {
-
-                for (x in 0 until 5) {
-                    try {
-                        fragments.add(
-                            FeaturedFragment().newInstance(
-                                articles[x].articlesThumbnailImage!!,
-                                articles[x].articlesTitle!!.rendered!!))
-                    } catch (e: Exception) { } }
-            }
-
-           // mAdapter!!.notifyDataSetChanged()
-
-            viewPager.adapter = mAdapter
-        }
-          )
-
         if (isConnected) {
 
         } else {
@@ -166,10 +140,7 @@ class HomeFragment : Fragment(), OnItemClickListener {
                 context,
                 "No Internet, Please check your Internet Connection",
                 Toast.LENGTH_LONG
-            )
-                .show()
-        }
-
+            ).show() }
 
         return root
     }
@@ -207,7 +178,38 @@ class HomeFragment : Fragment(), OnItemClickListener {
     }
 
 
-    fun addFragments() {
+    fun addFragments(fragments : ArrayList<Fragment>) {
+
+        fragments.add(
+            FeaturedFragment().newInstance(
+                R.drawable.loading.toString(),
+                " "
+            )
+        )
+        fragments.add(
+            FeaturedFragment().newInstance(
+                R.drawable.loading.toString(),
+                " "
+            )
+        )
+        fragments.add(
+            FeaturedFragment().newInstance(
+                R.drawable.loading.toString(),
+                " "
+            )
+        )
+        fragments.add(
+            FeaturedFragment().newInstance(
+                R.drawable.loading.toString(),
+                " "
+            )
+        )
+        fragments.add(
+            FeaturedFragment().newInstance(
+                R.drawable.loading.toString(),
+                " "
+            )
+        )
 
     }
 
@@ -229,9 +231,9 @@ class HomeFragment : Fragment(), OnItemClickListener {
             return 5
         }
 
-        override fun getItemPosition(`object`: Any): Int {
+      /*  override fun getItemPosition(`object`: Any): Int {
             return PagerAdapter.POSITION_NONE
-        }
+        }*/
 /*
         override fun getRealCount(): Int {
             return mFrags.size
