@@ -61,10 +61,6 @@ class FeaturedFragment : Fragment() {
             .into(featuredImage)
 
 
-        featuredImage.setOnClickListener {
-            Intent
-        }
-
 
         return view
     }

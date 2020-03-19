@@ -109,7 +109,7 @@ class HomeFragment : Fragment(), OnItemClickListener {
                     }
                 }.invokeOnCompletion {
 
-                    mAdapter = CustomPagerAdapter2(activity!!.supportFragmentManager, fragments)
+                    mAdapter = CustomPagerAdapter2(activity!!.supportFragmentManager, fragments,this , currentArticles )
                     mViewPager!!.adapter = mAdapter
 
                     mIndicator = MyPageIndicator(
@@ -123,9 +123,6 @@ class HomeFragment : Fragment(), OnItemClickListener {
 
                 }
             }
-          //  }
-          //  mAdapter!!.notifyDataSetChanged()
-            //viewPager.adapter = mAdapter
 
         })
 
@@ -170,19 +167,24 @@ class HomeFragment : Fragment(), OnItemClickListener {
     }
 
 
-    fun addCategories() {
-
-    }
-
 
 
     class CustomPagerAdapter2 :
         FragmentStatePagerAdapter {
 
+
         var mFrags: List<Fragment> = ArrayList()
 
-        constructor(fm: FragmentManager, frags: List<Fragment>) : super(fm){
+       var mListener : OnItemClickListener
+        var mCurrentArticles: ArrayList<Articles>?
+
+
+        constructor(fm: FragmentManager, frags: List<Fragment>,  listener: OnItemClickListener
+                        , currentArticles: ArrayList<Articles>?  ) : super(fm){
             mFrags = frags
+            mListener = listener
+            mCurrentArticles = currentArticles
+
         }
 
         override fun getItem(position: Int): Fragment {
@@ -192,6 +194,22 @@ class HomeFragment : Fragment(), OnItemClickListener {
         }
         override fun getCount(): Int {
             return 5
+        }
+
+        override fun instantiateItem(container: ViewGroup, position: Int): Any {
+
+           var inflater : LayoutInflater = container.context.
+               getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+
+
+            var page : View = inflater.inflate(R.layout.fragment_featured, null)
+
+           page.setOnClickListener{
+
+               mListener.onItemClick(mCurrentArticles!![position])
+           }
+
+            return super.instantiateItem(container, position)
         }
 
       /*  override fun getItemPosition(`object`: Any): Int {

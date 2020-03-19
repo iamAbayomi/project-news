@@ -103,21 +103,3 @@ class DetailedArticleActivity : AppCompatActivity() {
 
 
 }
-
-/*
-
-var unchecked: Drawable
-saved_icon.setOnClickListener {
-    if (!state) {
-        unchecked = resources.getDrawable(R.drawable.ic_saved_plain)
-        state = true
-    } else {
-        unchecked = resources.getDrawable(R.drawable.ic_saved_colored)
-        state = false
-    }
-    Glide.with(this)
-        .load(unchecked)
-        .into(saved_icon)
-    //  detailedViewModel.
-
-}*/

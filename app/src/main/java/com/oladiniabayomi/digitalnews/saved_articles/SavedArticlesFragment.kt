@@ -56,7 +56,7 @@ class SavedArticlesFragment : Fragment(), SavedOnItemClickListener {
 
     override fun onItemClick(articles: SavedArticles) {
         val intent = Intent(activity, DetailedArticleActivity::class.java)
-
+        //Converting Articles to Saved Articles
         var articless :Articles = convertArticles(articles)
 
         intent.putExtra("articles", articless)
