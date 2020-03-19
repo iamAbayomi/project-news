@@ -31,6 +31,10 @@ import com.oladiniabayomi.digitalnews.featured.FeaturedFragment
 import com.oladiniabayomi.digitalnews.helpers.SignInHelper
 import com.oladiniabayomi.digitalnews.interfaces.OnItemClickListener
 import kotlinx.android.synthetic.main.fragment_home.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
 import java.lang.Exception
 import java.util.*
 import kotlin.collections.ArrayList
@@ -53,6 +57,8 @@ class HomeFragment : Fragment(), OnItemClickListener {
     private lateinit var skeleton: Skeleton
     private var signInHelper: SignInHelper? = null
 
+    private val parentJob = Job()
+    private val coroutineScope = CoroutineScope( Dispatchers.Main + parentJob)
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -62,10 +68,7 @@ class HomeFragment : Fragment(), OnItemClickListener {
 
         val root = inflater.inflate(R.layout.fragment_home, container, false)
 
-        /*for ( x in 0..5 ){
-            fragments.add(FeaturedFragment().newInstance("https://i2.wp.com/www.tell.com.ng/wp-content/uploads/2020/02/images-1-1.jpeg?fit=610%2C503&ssl=1",
-                "Loading"))
-        }*/
+
         initialization(root)
 
         signInHelper = SignInHelper(activity)
@@ -77,7 +80,9 @@ class HomeFragment : Fragment(), OnItemClickListener {
         var fragments = ArrayList<Fragment>(5)
 
 
-       // addFragments(fragments)
+        val cm = context!!.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val activeNetwork: NetworkInfo? = cm.activeNetworkInfo
+        val isConnected: Boolean = activeNetwork?.isConnectedOrConnecting == true
 
 
         homeViewModel.allCategories.observe(viewLifecycleOwner, Observer { articles ->
@@ -87,50 +92,42 @@ class HomeFragment : Fragment(), OnItemClickListener {
                 fragments.clear()
                 signInHelper!!.putLogin("true")
             }
-            if (articles != null) {
-                for (x in 0 until 5) {
-                    try {
-                        fragments.add(
-                            FeaturedFragment().newInstance(
-                                articles[x].articlesThumbnailImage!!,
-                                articles[x].articlesTitle!!.rendered!!))
-                    } catch (e: Exception) { } } }
+            if (articles.size == 5) {
+
+                coroutineScope.launch {
+
+                    for (x in 0 until 5) {
+                        try {
+                            fragments.add(
+                                FeaturedFragment().newInstance(
+                                    articles[x].articlesThumbnailImage!!,
+                                    articles[x].articlesTitle!!.rendered!!
+                                )
+                            )
+                        } catch (e: Exception) {
+                        }
+                    }
+                }.invokeOnCompletion {
+
+                    mAdapter = CustomPagerAdapter2(activity!!.supportFragmentManager, fragments)
+                    mViewPager!!.adapter = mAdapter
+
+                    mIndicator = MyPageIndicator(
+                        activity!!.applicationContext,
+                        mLinearLayout!!,
+                        mViewPager!!,
+                        R.drawable.tab_selector
+                    )
+                    mIndicator!!.setPageCount(5)
+                    mIndicator!!.show()
+
+                }
+            }
+          //  }
           //  mAdapter!!.notifyDataSetChanged()
             //viewPager.adapter = mAdapter
-            mAdapter = CustomPagerAdapter2(activity!!.supportFragmentManager, fragments)
-            mViewPager!!.adapter = mAdapter
 
-            mIndicator = MyPageIndicator(
-                activity!!.applicationContext,
-                mLinearLayout!!,
-                mViewPager!!,
-                R.drawable.tab_selector
-            )
-
-            mIndicator!!.setPageCount(5)
-            mIndicator!!.show()
         })
-
-
-
-
-
-
-        val cm = context!!.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-        val activeNetwork: NetworkInfo? = cm.activeNetworkInfo
-        val isConnected: Boolean = activeNetwork?.isConnectedOrConnecting == true
-
-        if (!isConnected){
-            mViewPager!!.visibility = View.INVISIBLE
-
-        }else{
-
-            mViewPager!!.visibility = View.VISIBLE
-
-
-        }
-
-
 
         //skeleton.showSkeleton()
         if (isConnected) {
@@ -178,40 +175,6 @@ class HomeFragment : Fragment(), OnItemClickListener {
     }
 
 
-    fun addFragments(fragments : ArrayList<Fragment>) {
-
-        fragments.add(
-            FeaturedFragment().newInstance(
-                R.drawable.loading.toString(),
-                " "
-            )
-        )
-        fragments.add(
-            FeaturedFragment().newInstance(
-                R.drawable.loading.toString(),
-                " "
-            )
-        )
-        fragments.add(
-            FeaturedFragment().newInstance(
-                R.drawable.loading.toString(),
-                " "
-            )
-        )
-        fragments.add(
-            FeaturedFragment().newInstance(
-                R.drawable.loading.toString(),
-                " "
-            )
-        )
-        fragments.add(
-            FeaturedFragment().newInstance(
-                R.drawable.loading.toString(),
-                " "
-            )
-        )
-
-    }
 
     class CustomPagerAdapter2 :
         FragmentStatePagerAdapter {

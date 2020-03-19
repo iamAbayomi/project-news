@@ -1,6 +1,7 @@
 package com.oladiniabayomi.digitalnews.featured
 
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -58,6 +59,11 @@ class FeaturedFragment : Fragment() {
         Glide.with(this)
             .load(param1)
             .into(featuredImage)
+
+
+        featuredImage.setOnClickListener {
+            Intent
+        }
 
 
         return view
