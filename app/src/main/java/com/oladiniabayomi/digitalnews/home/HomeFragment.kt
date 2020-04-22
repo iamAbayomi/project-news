@@ -93,7 +93,7 @@ class HomeFragment : Fragment(), OnItemClickListener {
                 signInHelper!!.putLogin("true")
             }
             if (articles.size == 5) {
-0
+
                 coroutineScope.launch {
 
                     for (x in 0 until 5) {
