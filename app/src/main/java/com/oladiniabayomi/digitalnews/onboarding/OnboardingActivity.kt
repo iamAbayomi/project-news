@@ -62,15 +62,9 @@ class OnboardingActivity : AhoyOnboarderActivity() {
 
         setColorBackground(colorList)
         setOnboardPages(pages)
-
         setFinishButtonTitle("Get Started")
 
-
-
-
         preferenceHelper = WalkThroughHelper(this)
-
-
         if(preferenceHelper!!.intro.equals("no")){
             val intent  = Intent(this, MainActivity::class.java)
             startActivity(intent)
@@ -82,7 +76,6 @@ class OnboardingActivity : AhoyOnboarderActivity() {
 
         val intent  = Intent(this, MainActivity::class.java)
         startActivity(intent)
-
         preferenceHelper!!.putIntro("no")
 
     }

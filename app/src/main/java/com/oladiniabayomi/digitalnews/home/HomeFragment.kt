@@ -5,11 +5,14 @@ import android.content.Intent
 import android.net.ConnectivityManager
 import android.net.NetworkInfo
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.Toast
+import androidx.ads.identifier.AdvertisingIdClient
+import androidx.ads.identifier.AdvertisingIdInfo
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentStatePagerAdapter
@@ -22,6 +25,8 @@ import androidx.viewpager.widget.PagerAdapter
 import androidx.viewpager.widget.ViewPager
 import com.faltenreich.skeletonlayout.Skeleton
 import com.faltenreich.skeletonlayout.applySkeleton
+import com.google.common.util.concurrent.FutureCallback
+import com.google.common.util.concurrent.Futures.addCallback
 import com.oladiniabayomi.digitalarticles.articles.Articles
 import com.oladiniabayomi.digitalnews.custom.MyPageIndicator
 import com.oladiniabayomi.digitalnews.R
@@ -37,6 +42,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import java.lang.Exception
 import java.util.*
+import java.util.concurrent.Executors
 import kotlin.collections.ArrayList
 
 class HomeFragment : Fragment(), OnItemClickListener {
@@ -47,7 +53,6 @@ class HomeFragment : Fragment(), OnItemClickListener {
     private var articlesRecyclerViewAdapter: ArticlesRecyclerViewAdapter? = null
     private var layoutManager: LayoutManager? = null
     private var currentArticles = ArrayList<Articles>()
-
     //ViewPager variables
     var mViewPager: ViewPager? = null;
     var mLinearLayout: LinearLayout? = null
@@ -67,22 +72,18 @@ class HomeFragment : Fragment(), OnItemClickListener {
     ): View? {
 
         val root = inflater.inflate(R.layout.fragment_home, container, false)
-
-
         initialization(root)
 
         signInHelper = SignInHelper(activity)
-
         homeViewModel.allArticles.observe(viewLifecycleOwner, Observer { articles ->
             articles.let { articlesRecyclerViewAdapter!!.setArticles(ArrayList(it)) }
         })
 
         var fragments = ArrayList<Fragment>(5)
-
-
         val cm = context!!.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         val activeNetwork: NetworkInfo? = cm.activeNetworkInfo
         val isConnected: Boolean = activeNetwork?.isConnectedOrConnecting == true
+
 
 
         homeViewModel.allCategories.observe(viewLifecycleOwner, Observer { articles ->
@@ -120,12 +121,9 @@ class HomeFragment : Fragment(), OnItemClickListener {
                     )
                     mIndicator!!.setPageCount(5)
                     mIndicator!!.show()
-
                 }
             }
-
         })
-
         //skeleton.showSkeleton()
         if (isConnected) {
 
@@ -147,13 +145,55 @@ class HomeFragment : Fragment(), OnItemClickListener {
     }
 
 
+
+
+
+        private fun determineAdvertisingInfo() {
+            if (context?.let { AdvertisingIdClient.isAdvertisingIdProviderAvailable(it) }!!) {
+                val advertisingIdInfoListenableFuture =
+                    context?.let { AdvertisingIdClient.getAdvertisingIdInfo(it) }
+
+
+
+                addCallback(advertisingIdInfoListenableFuture,
+                    object : FutureCallback<AdvertisingIdInfo> {
+                        override fun onSuccess(adInfo: AdvertisingIdInfo?) {
+                            val id: String? = adInfo?.id
+                            val providerPackageName: String? = adInfo?.providerPackageName
+                            val isLimitTrackingEnabled: Boolean? =
+                                adInfo?.isLimitAdTrackingEnabled
+
+                            Toast.makeText(context, "we are here", Toast.LENGTH_LONG).show()
+
+                            //Toast.makeText(context, "ad$id", Toast.LENGTH_LONG).show()
+
+                            Log.e("GoogleID", "ad" + id)
+                        }
+
+                        override fun onFailure(t: Throwable) {
+                            Log.e("MY_APP_TAG",
+                                "Failed to connect to Advertising ID provider.")
+                            // Try to connect to the Advertising ID provider again, or fall
+                            // back to an ads solution that doesn't require using the
+                            // Advertising ID library.
+                        }
+                    }, Executors.newSingleThreadExecutor())
+            } else {
+                // The Advertising ID client library is unavailable. Use a different
+                // library to perform any required ads use cases.
+                Toast.makeText(context,"AdvertisingID not available", Toast.LENGTH_LONG).show()
+
+                Log.e("GoogleID", "ERROR")
+            }
+        }
+
+
     fun initialization(root: View) {
         homeViewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
         // initialization
         mViewPager = root.findViewById(R.id.viewPager)
         mLinearLayout = root.findViewById(R.id.pagesContainer)
         recyclerView = root.findViewById(R.id.home_recyclerview)
-
         // Either use an existing Skeletonlayout
         skeleton = recyclerView.applySkeleton(R.layout.article_item_view, 10)
 
@@ -171,11 +211,8 @@ class HomeFragment : Fragment(), OnItemClickListener {
 
     class CustomPagerAdapter2 :
         FragmentStatePagerAdapter {
-
-
         var mFrags: List<Fragment> = ArrayList()
-
-       var mListener : OnItemClickListener
+        var mListener : OnItemClickListener
         var mCurrentArticles: ArrayList<Articles>?
 
 
@@ -201,7 +238,6 @@ class HomeFragment : Fragment(), OnItemClickListener {
            var inflater : LayoutInflater = container.context.
                getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
 
-
             var page : View = inflater.inflate(R.layout.fragment_featured, null)
 
            page.setOnClickListener{
@@ -212,13 +248,5 @@ class HomeFragment : Fragment(), OnItemClickListener {
             return super.instantiateItem(container, position)
         }
 
-      /*  override fun getItemPosition(`object`: Any): Int {
-            return PagerAdapter.POSITION_NONE
-        }*/
-/*
-        override fun getRealCount(): Int {
-            return mFrags.size
-        }
-*/
     }
 }
