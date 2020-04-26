@@ -29,6 +29,7 @@ class ArticleRepository( private val articlesDao: ArticlesDao, var context: Appl
 
     private val parentJob = Job()
     private val coroutineScope = CoroutineScope(Dispatchers.Main + parentJob)
+
     var currentArticles = ArrayList<Articles>()
     var allCategories : LiveData<List<Articles>> = articlesDao.getCategories()
     val allArticles : LiveData<List<Articles>> = getArticles()
