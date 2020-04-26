@@ -2,6 +2,9 @@ package com.oladiniabayomi.digitalnews.onboarding
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
+import android.widget.Toast
+import com.adjust.sdk.Adjust
 import com.codemybrainsout.onboarder.AhoyOnboarderActivity
 import com.codemybrainsout.onboarder.AhoyOnboarderCard
 import com.oladiniabayomi.digitalnews.R
@@ -20,14 +23,14 @@ class OnboardingActivity : AhoyOnboarderActivity() {
     private var marginRight: Int = 4
     private var  marginBottom: Int = 4
 
-
     private var signInHelper: SignInHelper? = null
-
-
     private var preferenceHelper: WalkThroughHelper? = null
+
+    var GAID= ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
 
         val ahoyOnboarderCard1 = AhoyOnboarderCard("View Articles", "Get update with written posts from various writers around the globe", R.drawable.tell)
         ahoyOnboarderCard1.setBackgroundColor(R.color.white)
@@ -73,11 +76,18 @@ class OnboardingActivity : AhoyOnboarderActivity() {
     }
 
     override fun onFinishButtonPressed() {
-
         val intent  = Intent(this, MainActivity::class.java)
         startActivity(intent)
         preferenceHelper!!.putIntro("no")
+    }
 
+    fun getAdjustID(){
+        Adjust.getGoogleAdId(this) {
+            Toast.makeText(applicationContext, "This is the ads ID : $it", Toast.LENGTH_LONG).show()
+            GAID = it
+            Log.d("Adjust:advertisingID","This is the ads ID : $it")
+        }
+        //getValuefromWebpage()
     }
 
 }

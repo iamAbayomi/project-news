@@ -93,8 +93,8 @@ class ArticleRepository( private val articlesDao: ArticlesDao, var context: Appl
          }.invokeOnCompletion {
 
              if (abs((currentDate - time)) > FRESH_TIMEOUT_IN_MINUTES) {
-                 Toast.makeText(context, abs((time)).toString(), Toast.LENGTH_LONG)
-                     .show()
+                 //Toast.makeText(context, abs((time)).toString(), Toast.LENGTH_LONG)
+                   //  .show()
 /*
              Toast.makeText(context, abs( ( currentDate)).toString() , Toast.LENGTH_LONG)
                  .show()*/

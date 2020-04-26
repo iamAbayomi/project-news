@@ -11,8 +11,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.Toast
-import androidx.ads.identifier.AdvertisingIdClient
-import androidx.ads.identifier.AdvertisingIdInfo
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentStatePagerAdapter
@@ -23,10 +21,9 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.LayoutManager
 import androidx.viewpager.widget.PagerAdapter
 import androidx.viewpager.widget.ViewPager
+import com.adjust.sdk.Adjust
 import com.faltenreich.skeletonlayout.Skeleton
 import com.faltenreich.skeletonlayout.applySkeleton
-import com.google.common.util.concurrent.FutureCallback
-import com.google.common.util.concurrent.Futures.addCallback
 import com.oladiniabayomi.digitalarticles.articles.Articles
 import com.oladiniabayomi.digitalnews.custom.MyPageIndicator
 import com.oladiniabayomi.digitalnews.R
@@ -65,6 +62,10 @@ class HomeFragment : Fragment(), OnItemClickListener {
     private val parentJob = Job()
     private val coroutineScope = CoroutineScope( Dispatchers.Main + parentJob)
 
+    var GAID : String? = ""
+
+
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -85,6 +86,7 @@ class HomeFragment : Fragment(), OnItemClickListener {
         val isConnected: Boolean = activeNetwork?.isConnectedOrConnecting == true
 
 
+        getAdjustID()
 
         homeViewModel.allCategories.observe(viewLifecycleOwner, Observer { articles ->
             /*Toast.makeText(context, articles[1].articlesFullText!!.rendered , Toast.LENGTH_LONG)
@@ -147,47 +149,6 @@ class HomeFragment : Fragment(), OnItemClickListener {
 
 
 
-
-        private fun determineAdvertisingInfo() {
-            if (context?.let { AdvertisingIdClient.isAdvertisingIdProviderAvailable(it) }!!) {
-                val advertisingIdInfoListenableFuture =
-                    context?.let { AdvertisingIdClient.getAdvertisingIdInfo(it) }
-
-
-
-                addCallback(advertisingIdInfoListenableFuture,
-                    object : FutureCallback<AdvertisingIdInfo> {
-                        override fun onSuccess(adInfo: AdvertisingIdInfo?) {
-                            val id: String? = adInfo?.id
-                            val providerPackageName: String? = adInfo?.providerPackageName
-                            val isLimitTrackingEnabled: Boolean? =
-                                adInfo?.isLimitAdTrackingEnabled
-
-                            Toast.makeText(context, "we are here", Toast.LENGTH_LONG).show()
-
-                            //Toast.makeText(context, "ad$id", Toast.LENGTH_LONG).show()
-
-                            Log.e("GoogleID", "ad" + id)
-                        }
-
-                        override fun onFailure(t: Throwable) {
-                            Log.e("MY_APP_TAG",
-                                "Failed to connect to Advertising ID provider.")
-                            // Try to connect to the Advertising ID provider again, or fall
-                            // back to an ads solution that doesn't require using the
-                            // Advertising ID library.
-                        }
-                    }, Executors.newSingleThreadExecutor())
-            } else {
-                // The Advertising ID client library is unavailable. Use a different
-                // library to perform any required ads use cases.
-                Toast.makeText(context,"AdvertisingID not available", Toast.LENGTH_LONG).show()
-
-                Log.e("GoogleID", "ERROR")
-            }
-        }
-
-
     fun initialization(root: View) {
         homeViewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
         // initialization
@@ -207,6 +168,17 @@ class HomeFragment : Fragment(), OnItemClickListener {
     }
 
 
+    fun getAdjustID(){
+
+        Adjust.getGoogleAdId(context) {
+            Toast.makeText(context, "This is the ads ID : $it", Toast.LENGTH_LONG).show()
+            GAID = it
+            Log.d("Adjust:advertisingID","This is the ads ID : $it")
+        }
+      //  Toast.makeText(context, "This is the ads ID : $GAID", Toast.LENGTH_LONG).show()
+
+        //getValuefromWebpage()
+    }
 
 
     class CustomPagerAdapter2 :
