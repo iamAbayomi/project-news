@@ -86,10 +86,6 @@ dependencies {
     implementation 'com.github.bumptech.glide:glide:4.8.0'
     // Glide v4 uses this new annotation processor -- see https://bumptech.github.io/glide/doc/generatedapi.html
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
-    //Google AdvertisingID
-    implementation 'androidx.ads:ads-identifier:1.0.0-alpha01'
-    // Used for the calls to addCallback() in the snippets on this page.
-    implementation 'com.google.guava:guava:28.0-android'
 
 
     annotationProcessor 'com.github.bumptech.glide:compiler:4.8.0'
