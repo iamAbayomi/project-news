@@ -47,7 +47,7 @@ class ArticleRepository( private val articlesDao: ArticlesDao, var context: Appl
             SharedPreferencesHelper()
         return if (sharedPreferences.getSharedPrefs(context) != "sent" )
         {
-            Toast.makeText(context, "I am here", Toast.LENGTH_LONG).show()
+          //  Toast.makeText(context, "I am here", Toast.LENGTH_LONG).show()
             sharedPreferences.saveSharedPrefs(context)
 
             val sdf = SimpleDateFormat("mm")

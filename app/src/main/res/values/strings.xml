@@ -1,6 +1,9 @@
 <resources>
     <string name="app_name">Tell</string>
     <string name="title_home">Home</string>
+    <string name="facebook_app_id">1090151498026240</string>
+    <string name="facebook2_app_id">254089849117820</string>
+    <string name="fb_login_protocol_scheme">fb1090151498026240</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="saved">Saved</string>

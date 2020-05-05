@@ -22,6 +22,8 @@ import androidx.recyclerview.widget.RecyclerView.LayoutManager
 import androidx.viewpager.widget.PagerAdapter
 import androidx.viewpager.widget.ViewPager
 import com.adjust.sdk.Adjust
+import com.facebook.FacebookSdk
+import com.facebook.applinks.AppLinkData
 import com.faltenreich.skeletonlayout.Skeleton
 import com.faltenreich.skeletonlayout.applySkeleton
 import com.oladiniabayomi.digitalarticles.articles.Articles
@@ -63,6 +65,7 @@ class HomeFragment : Fragment(), OnItemClickListener {
     private val coroutineScope = CoroutineScope( Dispatchers.Main + parentJob)
 
     var GAID : String? = ""
+    var bannerID = ""
 
 
 
@@ -86,7 +89,6 @@ class HomeFragment : Fragment(), OnItemClickListener {
         val isConnected: Boolean = activeNetwork?.isConnectedOrConnecting == true
 
 
-        getAdjustID()
 
         homeViewModel.allCategories.observe(viewLifecycleOwner, Observer { articles ->
             /*Toast.makeText(context, articles[1].articlesFullText!!.rendered , Toast.LENGTH_LONG)
@@ -180,6 +182,21 @@ class HomeFragment : Fragment(), OnItemClickListener {
         //getValuefromWebpage()
     }
 
+    fun getBannerId(){
+        FacebookSdk.setAutoInitEnabled(true)
+        FacebookSdk.fullyInitialize()
+        FacebookSdk.setAutoLogAppEventsEnabled(true)
+        FacebookSdk.setAdvertiserIDCollectionEnabled(true)
+
+        coroutineScope.launch {
+            AppLinkData.fetchDeferredAppLinkData(context
+            ) {
+                bannerID = it?.targetUri.toString()
+            }
+        }.invokeOnCompletion {
+            Toast.makeText(context, "This is the banner ID : $bannerID", Toast.LENGTH_LONG).show()
+        }
+    }
 
     class CustomPagerAdapter2 :
         FragmentStatePagerAdapter {
